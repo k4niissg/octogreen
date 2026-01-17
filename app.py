@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import time
 from datetime import datetime, timedelta
 from modules import ai_analysis, report_tools, open_data, ui_utils
 
@@ -13,16 +14,28 @@ st.set_page_config(
 
 st.markdown(ui_utils.CUSTOM_CSS, unsafe_allow_html=True)
 
+# Sidebar content (always visible)
+try:
+    st.sidebar.image("assets/octogreen-logo.png", width='stretch')
+except:
+    st.sidebar.markdown('<div style="width:100%;height:200px;background:#10b981;border-radius:20px;margin-bottom:1rem;"></div>', unsafe_allow_html=True)
+
+# Show Load New Data button if data is loaded
+if 'df' in st.session_state:
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("<h3 style='color:#10b981;margin-bottom:2rem;'>Current Data</h3>", unsafe_allow_html=True)
+    st.sidebar.markdown(f"<p style='color:#374151;'>Dataset loaded with {len(st.session_state.df)} records</p>", unsafe_allow_html=True)
+    if st.sidebar.button("Load New Data"):
+        if 'analysis' in st.session_state:
+            del st.session_state.analysis
+        del st.session_state.df
+        st.rerun()
+    st.sidebar.markdown("---")
+
 # Check if data is loaded
 if 'df' not in st.session_state:
     # Show welcome screen
     ui_utils.show_welcome_screen()
-    
-    # Sidebar logo at top (centered and larger)
-    try:
-        st.sidebar.image("assets/octogreen-logo.png", use_container_width=True)
-    except:
-        st.sidebar.markdown('<div style="width:100%;height:200px;background:#10b981;border-radius:20px;margin-bottom:1rem;"></div>', unsafe_allow_html=True)
     
     # Sidebar for data source selection
     st.sidebar.markdown("<h3 style='color:#10b981;margin-bottom:2rem;'>Data Source</h3>", unsafe_allow_html=True)
@@ -42,46 +55,86 @@ if 'df' not in st.session_state:
         
         if "UCI Household" in source:
             if st.sidebar.button("Download Data", key="uci_btn"):
-                ui_utils.show_loading_progress("UCI dataset loaded!", [
-                    "Connecting to UCI repository...",
-                    "Downloading household data...",
-                    "Processing 2M+ records...",
-                    "Cleaning and formatting data..."
-                ])
-                st.session_state.df = open_data.fetch_kaggle_household()
-                st.success(f"✓ {len(st.session_state.df)} records loaded!")
-                st.rerun()
-            else:
-                st.info("Click 'Download Data' button")
+                # Create progress bar and status in main content area
+                progress_bar = st.progress(0)
+                status_text = st.empty()
+                
+                # Initial state
+                status_text.info(" Preparing to download data...")
+                progress_bar.progress(10)
+                
+                try:
+                    # Show loading during data fetching
+                    with st.spinner("Downloading data from UCI repository..."):
+                        progress_bar.progress(30)
+                        st.session_state.df = open_data.fetch_kaggle_household()
+                        progress_bar.progress(80)
+                    
+                    # Clear previous analysis
+                    if 'analysis' in st.session_state:
+                        del st.session_state.analysis
+                    
+                    # Show success
+                    progress_bar.progress(100)
+                    status_text.success(f" Successfully loaded {len(st.session_state.df)} records!")
+                    
+                    # Keep the success message visible briefly before rerun
+                    time.sleep(1.5)
+                    st.rerun()
+                    
+                except Exception as e:
+                    progress_bar.empty()
+                    status_text.error(f" Error loading data: {str(e)}")
+            # No message will be shown when the button is not clicked
         
         elif "EPIAS Turkey" in source:
             start = st.sidebar.date_input("Start Date", datetime.now() - timedelta(days=7))
             end = st.sidebar.date_input("End Date", datetime.now())
-            if st.sidebar.button("Fetch Data"):
-                ui_utils.show_loading_progress("Turkey data loaded!", [
-                    "Connecting to EPIAS API...",
-                    "Fetching electricity consumption data...",
-                    "Processing hourly records..."
-                ])
-                df = open_data.fetch_epias_data(start, end)
-                if df is not None:
-                    st.session_state.df = df
-                    st.success("✓ Turkey electricity consumption data loaded!")
-                    st.rerun()
-                else:
-                    st.error("✗ Failed to fetch data. Check API access.")
+            if st.sidebar.button("Fetch Data", key="epias_fetch"):
+                # Create progress bar and status in main content area
+                progress_bar = st.progress(0)
+                status_text = st.empty()
+                
+                try:
+                    # Initial state
+                    status_text.info(" Connecting to EPIAS API...")
+                    progress_bar.progress(10)
+                    
+                    # Show loading during data fetching
+                    with st.spinner("Fetching electricity consumption data..."):
+                        progress_bar.progress(30)
+                        df = open_data.fetch_epias_data(start, end)
+                        
+                        if df is not None:
+                            progress_bar.progress(70)
+                            st.session_state.df = df
+                            
+                            # Clear previous analysis
+                            if 'analysis' in st.session_state:
+                                del st.session_state.analysis
+                            
+                            # Show success
+                            progress_bar.progress(100)
+                            status_text.success(" Successfully loaded Turkey electricity consumption data!")
+                            
+                            # Keep the success message visible briefly before rerun
+                            time.sleep(1.5)
+                            st.rerun()
+                        else:
+                            progress_bar.empty()
+                            status_text.error(" Failed to fetch data. Please check your API access and try again.")
+                            
+                except Exception as e:
+                    progress_bar.empty()
+                    status_text.error(f" Error: {str(e)}")
             else:
-                st.info("↑ Select dates and click 'Fetch Data' button")
+                st.info("↑ Select date range and click 'Fetch Data' button")
         
         elif "World Bank" in source:
             if st.sidebar.button("Fetch World Bank Data"):
-                ui_utils.show_loading_progress("World Bank data loaded!", [
-                    "Connecting to World Bank API...",
-                    "Fetching energy consumption indicators...",
-                    "Processing country-level data...",
-                    "Formatting for analysis..."
-                ])
-                energy_df = open_data.fetch_world_bank_energy()
+                # Show loading during actual data fetching
+                with st.sidebar.spinner("Connecting to World Bank API..."):
+                    energy_df = open_data.fetch_world_bank_energy()
                 if energy_df is not None:
                     st.success(f"✓ World Bank data loaded! {len(energy_df)} records")
                     df = energy_df.copy()
@@ -89,6 +142,8 @@ if 'df' not in st.session_state:
                     df["device_id"] = df["country"]
                     df["consumption_kWh"] = df["consumption_kwh_per_capita"]
                     st.session_state.df = df[["timestamp", "device_id", "consumption_kWh"]].dropna()
+                    if 'analysis' in st.session_state:
+                        del st.session_state.analysis
                     st.rerun()
                 else:
                     st.error("✗ Failed to fetch World Bank data.")
@@ -107,6 +162,8 @@ if 'df' not in st.session_state:
         )
         if uploaded:
             st.session_state.df = pd.read_csv(uploaded)
+            if 'analysis' in st.session_state:
+                del st.session_state.analysis
             st.success("✓ CSV data loaded.")
             st.rerun()
         else:
@@ -126,17 +183,16 @@ else:
     # Simple header for analysis page
     st.markdown("<h1 style='text-align:center;'>OctoGreen: Smart Energy Analysis Platform</h1>", unsafe_allow_html=True)
     
-    # Clear data button
-    if st.sidebar.button("Load New Data"):
-        del st.session_state.df
-        st.rerun()
-    
     # Data Preview
     st.markdown("<h2>Data Preview</h2>", unsafe_allow_html=True)
     st.dataframe(df.head())
     
     # AI Analysis
-    analysis = ai_analysis.analyze(df)
+    analysis = st.session_state.get('analysis')
+    if analysis is None:
+        with st.spinner("Running AI analysis..."):
+            analysis = ai_analysis.analyze(df)
+        st.session_state.analysis = analysis
     st.markdown("<h2>AI Analysis Results and Recommendations</h2>", unsafe_allow_html=True)
     st.write(analysis["summary"])
     st.write(analysis["recommendations"])

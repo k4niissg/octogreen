@@ -18,17 +18,17 @@ def visualize(df, analysis):
 
     st.markdown("### Hourly Consumption (All Devices)")
     fig = px.line(df, x='timestamp', y='consumption_kWh', color='device_id', title='Hourly Consumption')
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
     st.markdown("### Daily Total Consumption")
     daily = analysis['summary']['daily_total']
     fig2 = px.bar(x=list(daily.keys()), y=list(daily.values()), labels={'x':'Day', 'y':'Total kWh'}, title='Daily Total Consumption')
-    st.plotly_chart(fig2, use_container_width=True)
+    st.plotly_chart(fig2, width='stretch')
 
     st.markdown("### Hourly Average Consumption")
     hourly = analysis['summary']['hourly_avg']
     fig3 = px.bar(x=list(hourly.keys()), y=list(hourly.values()), labels={'x':'Hour', 'y':'Average kWh'}, title='Hourly Average Consumption')
-    st.plotly_chart(fig3, use_container_width=True)
+    st.plotly_chart(fig3, width='stretch')
 
     st.markdown("### Anomaly Points")
     anomalies = analysis['summary']['anomalies']
@@ -38,7 +38,7 @@ def visualize(df, analysis):
         fig4 = go.Figure()
         fig4.add_trace(go.Scatter(x=df['timestamp'], y=df['consumption_kWh'], mode='lines', name='Consumption'))
         fig4.add_trace(go.Scatter(x=anom_df['timestamp'], y=anom_df['consumption_kWh'], mode='markers', name='Anomaly', marker=dict(color='red', size=10)))
-        st.plotly_chart(fig4, use_container_width=True)
+        st.plotly_chart(fig4, width='stretch')
     else:
         st.info("No anomalies detected.")
 
