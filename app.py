@@ -183,9 +183,48 @@ else:
     # Simple header for analysis page
     st.markdown("<h1 style='text-align:center;'>OctoGreen: Smart Energy Analysis Platform</h1>", unsafe_allow_html=True)
     
-    # Data Preview
-    st.markdown("<h2>Data Preview</h2>", unsafe_allow_html=True)
-    st.dataframe(df.head())
+    # Data Preview with white theme
+    st.markdown("""
+    <div style='margin: 2rem 0 1rem 0;'>
+        <h2 style='color: #1f2937; border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem;'>Data Preview</h2>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Style the dataframe with white theme
+    st.markdown("""
+    <style>
+        .stDataFrame {
+            border: 1px solid #e5e7eb !important;
+            border-radius: 8px !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+        }
+        .stDataFrame th {
+            background-color: #f9fafb !important;
+            color: #1f2937 !important;
+            font-weight: 600 !important;
+            border-bottom: 1px solid #e5e7eb !important;
+        }
+        .stDataFrame td {
+            color: #1f2937 !important;
+            border-bottom: 1px solid #f3f4f6 !important;
+        }
+        .stDataFrame tr:hover {
+            background-color: #f9fafb !important;
+        }
+        .stDataFrame thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Display the dataframe with some additional styling
+    st.dataframe(df.head().style.set_properties(**{
+        'background-color': 'white',
+        'color': '#1f2937',
+        'border': '1px solid white'
+    }))
     
     # AI Analysis
     analysis = st.session_state.get('analysis')

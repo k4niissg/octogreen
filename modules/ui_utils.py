@@ -285,19 +285,29 @@ a:hover {
 /* Button styling */
 .stButton > button {
     background-color: #10b981 !important;
-    border-radius: 8px !important;
-    font-size: 1rem !important;
-    font-weight: 600 !important;
-    padding: 0.75rem 1.5rem !important;
+    border-radius: 6px !important;
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+    padding: 0.5rem 1.25rem !important;
+    height: auto !important;
+    min-height: 36px !important;
+    line-height: 1.4 !important;
     border: none !important;
     color: white !important;
-    transition: all 0.3s ease !important;
+    transition: all 0.2s ease !important;
 }
 
 .stButton > button:hover {
     background-color: #059669 !important;
     transform: translateY(-1px) !important;
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25) !important;
+}
+
+/* Make sidebar buttons more compact */
+.stSidebar .stButton > button {
+    padding: 0.4rem 1rem !important;
+    font-size: 0.9rem !important;
+    min-height: 32px !important;
 }
 
 /* Alert styling - white theme */
