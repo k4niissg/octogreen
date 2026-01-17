@@ -1,5 +1,4 @@
 # <img src="assets/octogreen-logo.png" alt="OctoGreen Logo" width="120"/>
-#
 # OctoGreen: Smart Energy Analysis and Savings Platform
 
 ## Project Purpose
