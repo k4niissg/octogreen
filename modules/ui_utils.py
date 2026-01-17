@@ -3,40 +3,136 @@
 # White theme CSS with better typography and loading
 CUSTOM_CSS = '''
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+    --primary-color: #10b981;
+    --secondary-color: #059669;
+    --text-dark: #1f2937;
+    --text-light: #6b7280;
+    --bg-light: #f9fafb;
+    --border-color: #e5e7eb;
+    
+    /* Typography Scale */
+    --text-xs: 0.75rem;    /* 12px */
+    --text-sm: 0.875rem;   /* 14px */
+    --text-base: 1rem;     /* 16px */
+    --text-lg: 1.125rem;   /* 18px */
+    --text-xl: 1.25rem;    /* 20px */
+    --text-2xl: 1.5rem;    /* 24px */
+    --text-3xl: 1.875rem;  /* 30px */
+    --text-4xl: 2.25rem;   /* 36px */
+}
+
+/* Base styles */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
 /* Global white theme */
 .stApp {
     background-color: white !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif !important;
+    color: var(--text-dark);
+    line-height: 1.6;
 }
 
 .main .block-container {
     background-color: white !important;
 }
 
-/* Date input text color */
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif !important;
+    font-weight: 600 !important;
+    color: var(--text-dark) !important;
+    line-height: 1.3 !important;
+    letter-spacing: -0.02em !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 1rem !important;
+}
+
+h1 {
+    font-size: var(--text-4xl) !important;
+    font-weight: 700 !important;
+    color: var(--primary-color) !important;
+    margin-top: 0 !important;
+}
+
+h2 {
+    font-size: var(--text-3xl) !important;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+h3 {
+    font-size: var(--text-2xl) !important;
+}
+
+p {
+    margin-bottom: 1.25rem !important;
+    line-height: 1.7 !important;
+    font-size: var(--text-base) !important;
+}
+
+a {
+    color: var(--primary-color) !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease !important;
+}
+
+a:hover {
+    color: var(--secondary-color) !important;
+}
+
+/* Form elements */
 .stDateInput input {
-    color: #1f2937 !important;
+    color: var(--text-dark) !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: var(--text-base) !important;
 }
 
 .stDateInput input::placeholder {
-    color: #9ca3af !important;
+    color: var(--text-light) !important;
+    opacity: 0.7 !important;
 }
 
-/* Typography */
-h1 {
-    font-family: "Poppins", sans-serif !important;
-    font-weight: 700 !important;
-    font-size: 3rem !important;
-    color: #10b981 !important;
+/* Utility classes */
+.text-primary {
+    color: var(--primary-color) !important;
 }
 
-h2, h3, h4, h5, h6 {
-    font-family: "Poppins", sans-serif !important;
+.text-light {
+    color: var(--text-light) !important;
+}
+
+.font-medium {
+    font-weight: 500 !important;
+}
+
+.font-semibold {
     font-weight: 600 !important;
-    font-size: 1.8rem !important;
-    margin-top: 2rem !important;
-    color: #1f2937 !important;
+}
+
+.text-sm {
+    font-size: var(--text-sm) !important;
+}
+
+.text-lg {
+    font-size: var(--text-lg) !important;
+}
+
+.text-xl {
+    font-size: var(--text-xl) !important;
+}
+
+.leading-relaxed {
+    line-height: 1.625 !important;
+}
+
+.tracking-wide {
+    letter-spacing: 0.025em !important;
 }
 
 /* Sidebar white theme */
