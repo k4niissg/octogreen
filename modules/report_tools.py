@@ -76,7 +76,7 @@ def visualize(df, analysis):
             borderwidth=1
         )
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     
     # Daily Total Consumption
     st.markdown("<h3 style='color:#1f2937; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; margin-top: 2rem;'>Daily Total Consumption</h3>", unsafe_allow_html=True)
@@ -95,7 +95,7 @@ def visualize(df, analysis):
         marker_line_width=1.5,
         opacity=0.8
     )
-    st.plotly_chart(fig2, use_container_width=True)
+    st.plotly_chart(fig2, width="stretch")
     
     # Hourly Average Consumption
     st.markdown("<h3 style='color:#1f2937; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; margin-top: 2rem;'>Hourly Average Consumption</h3>", unsafe_allow_html=True)
@@ -114,7 +114,7 @@ def visualize(df, analysis):
         marker_line_width=1.5,
         opacity=0.8
     )
-    st.plotly_chart(fig3, use_container_width=True)
+    st.plotly_chart(fig3, width="stretch")
     
     # Anomaly Points
     st.markdown("<h3 style='color:#1f2937; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; margin-top: 2rem;'>Anomaly Detection</h3>", unsafe_allow_html=True)
@@ -164,7 +164,18 @@ def visualize(df, analysis):
         </style>
         """, unsafe_allow_html=True)
         
-        st.dataframe(anom_df)
+        # Display with Pandas Styler to force light theme
+        st.dataframe(
+            anom_df.style.set_properties(**{
+                'background-color': '#ffffff',
+                'color': '#1f2937',
+                'border-color': '#e5e7eb'
+            }).set_table_styles([
+                {'selector': 'th', 'props': [('background-color', '#f9fafb'), ('color', '#1f2937'), ('font-weight', '600')]},
+                {'selector': 'td', 'props': [('color', '#1f2937')]}
+            ]),
+            width="stretch"
+        )
         
         # Anomaly plot
         fig4 = go.Figure()
@@ -203,7 +214,7 @@ def visualize(df, analysis):
             )
         )
         
-        st.plotly_chart(fig4, use_container_width=True)
+        st.plotly_chart(fig4, width="stretch")
     else:
         st.info("No anomalies detected.")
 

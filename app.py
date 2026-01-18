@@ -5,241 +5,262 @@ import time
 from datetime import datetime, timedelta
 from modules import ai_analysis, report_tools, open_data, ui_utils
 
+# Page Config
 st.set_page_config(
-    page_title="OctoGreen Dashboard",
+    page_title="OctoGreen",
     layout="wide",
-    initial_sidebar_state="expanded",
-    page_icon="assets/logo.png"
+    page_icon="assets/logo.png",
+    initial_sidebar_state="collapsed"
 )
 
+# Apply Clean Apple-Style CSS
 st.markdown(ui_utils.CUSTOM_CSS, unsafe_allow_html=True)
 
-# Sidebar content (always visible)
-try:
-    st.sidebar.image("assets/octogreen-logo.png", width='stretch')
-except:
-    st.sidebar.markdown('<div style="width:100%;height:200px;background:#10b981;border-radius:20px;margin-bottom:1rem;"></div>', unsafe_allow_html=True)
+# Session State Initialization
+if 'data_mode' not in st.session_state:
+    st.session_state.data_mode = None  # 'open_data' or 'upload'
 
-# Show Load New Data button if data is loaded
-if 'df' in st.session_state:
-    st.sidebar.markdown("---")
-    st.sidebar.markdown("<h3 style='color:#10b981;margin-bottom:2rem;'>Current Data</h3>", unsafe_allow_html=True)
-    st.sidebar.markdown(f"<p style='color:#374151;'>Dataset loaded with {len(st.session_state.df)} records</p>", unsafe_allow_html=True)
-    if st.sidebar.button("Load New Data"):
-        if 'analysis' in st.session_state:
-            del st.session_state.analysis
-        del st.session_state.df
-        st.rerun()
-    st.sidebar.markdown("---")
+def reset_app():
+    for key in ['df', 'analysis', 'data_mode']:
+        if key in st.session_state:
+            del st.session_state[key]
+    st.rerun()
 
-# Check if data is loaded
-if 'df' not in st.session_state:
-    # Show welcome screen
-    ui_utils.show_welcome_screen()
+# --- HEADER / HERO SECTION ---
+def render_hero():
+    # Use standard Streamlit columns to center logo perfectly
+    col1, col2, col3 = st.columns([1, 4, 1])
+    with col2:
+        # Using markdown for centering the image ensures better control than standard st.image centering issues
+        try:
+            st.image("assets/octogreen-logo.png", width=280)
+        except:
+             st.markdown("<h1>OctoGreen</h1>", unsafe_allow_html=True)
     
-    # Sidebar for data source selection
-    st.sidebar.markdown("<h3 style='color:#10b981;margin-bottom:2rem;'>Data Source</h3>", unsafe_allow_html=True)
-    data_source = st.sidebar.radio("How to load data?", ["Open Data Sources", "Upload CSV"], index=0)
+    st.markdown("""
+        <div class="hero-box">
+            <p class="hero-subtitle">Intelligent energy analysis for a sustainable future.<br>Select a data source to begin.</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+# --- MAIN SELECTION SCREEN ---
+def render_selection_screen():
+    render_hero()
     
-    if data_source == "Open Data Sources":
-        st.sidebar.markdown("<h4 style='margin-bottom:1rem;'>Select Data Source</h4>", unsafe_allow_html=True)
-        source = st.sidebar.selectbox("Source", [
-            "UCI Household (2M+ records)",
-            "EPIAS Turkey (Real-time)",
-            "World Bank - Energy & Carbon",
-            "OECD Energy Statistics",
-            "EU Open Data Portal",
-            "London Smart Meter Data",
-            "Sample Datasets"
-        ])
+    # Selection Grid
+    if st.session_state.data_mode is None:
+        # Use columns with explicit padding/gap
+        col_space_l, col1, col2, col_space_r = st.columns([1, 2, 2, 1], gap="large")
         
-        if "UCI Household" in source:
-            if st.sidebar.button("Download Data", key="uci_btn"):
-                # Create progress bar and status in main content area
-                progress_bar = st.progress(0)
-                status_text = st.empty()
-                
-                # Initial state
-                status_text.info(" Preparing to download data...")
-                progress_bar.progress(10)
-                
-                try:
-                    # Show loading during data fetching
-                    with st.spinner("Downloading data from UCI repository..."):
-                        progress_bar.progress(30)
+        with col1:
+             # Put the button label nicely inside the button or above it
+             if st.button("Browse Open Data", key="btn_open_data", width="stretch"):
+                st.session_state.data_mode = 'open_data'
+                st.rerun()
+             st.caption("Public datasets from global repositories")
+
+        with col2:
+             if st.button("Upload Your Own", key="btn_upload", width="stretch"):
+                st.session_state.data_mode = 'upload'
+                st.rerun()
+             st.caption("Analyze your CSV files securely")
+
+    # --- Mode: Open Data ---
+    elif st.session_state.data_mode == 'open_data':
+        c1, c2 = st.columns([1, 5])
+        with c1:
+            if st.button("Back", key="back_btn"):
+                st.session_state.data_mode = None
+                st.rerun()
+        
+        st.markdown("<h3>Select a Dataset</h3>", unsafe_allow_html=True)
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        col_opts, col_detais = st.columns([1.2, 0.8], gap="large")
+        
+        with col_opts:
+            source = st.selectbox("Choose Source", [
+                "UCI Household (2M+ records)",
+                "EPIAS Turkey (Real-time)",
+                "World Bank - Energy & Carbon",
+            ])
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            
+            # Action Area
+            if "UCI Household" in source:
+                if st.button("Download & Analyze Data", key="dl_uci", width="stretch"):
+                    with st.status("Processing Data...", expanded=True) as status:
+                        st.write("Connecting to safe repository...")
+                        time.sleep(0.5)
+                        st.write("Downloading 2M+ records...")
                         st.session_state.df = open_data.fetch_kaggle_household()
-                        progress_bar.progress(80)
-                    
-                    # Clear previous analysis
-                    if 'analysis' in st.session_state:
-                        del st.session_state.analysis
-                    
-                    # Show success
-                    progress_bar.progress(100)
-                    status_text.success(f" Successfully loaded {len(st.session_state.df)} records!")
-                    
-                    # Keep the success message visible briefly before rerun
-                    time.sleep(1.5)
+                        st.write("Running pre-analysis...")
+                        time.sleep(0.5)
+                        status.update(label="Ready!", state="complete", expanded=False)
                     st.rerun()
-                    
-                except Exception as e:
-                    progress_bar.empty()
-                    status_text.error(f" Error loading data: {str(e)}")
-            # No message will be shown when the button is not clicked
-        
-        elif "EPIAS Turkey" in source:
-            start = st.sidebar.date_input("Start Date", datetime.now() - timedelta(days=7))
-            end = st.sidebar.date_input("End Date", datetime.now())
-            if st.sidebar.button("Fetch Data", key="epias_fetch"):
-                # Create progress bar and status in main content area
-                progress_bar = st.progress(0)
-                status_text = st.empty()
+
+            elif "EPIAS Turkey" in source:
+                c1, c2 = st.columns(2)
+                with c1:
+                    start = st.date_input("Start Date", datetime.now() - timedelta(days=7))
+                with c2:
+                    end = st.date_input("End Date", datetime.now())
                 
-                try:
-                    # Initial state
-                    status_text.info(" Connecting to EPIAS API...")
-                    progress_bar.progress(10)
-                    
-                    # Show loading during data fetching
-                    with st.spinner("Fetching electricity consumption data..."):
-                        progress_bar.progress(30)
+                if st.button("Fetch Live Data", key="dl_epias", width="stretch"):
+                    with st.spinner("Fetching live data..."):
                         df = open_data.fetch_epias_data(start, end)
-                        
                         if df is not None:
-                            progress_bar.progress(70)
                             st.session_state.df = df
-                            
-                            # Clear previous analysis
-                            if 'analysis' in st.session_state:
-                                del st.session_state.analysis
-                            
-                            # Show success
-                            progress_bar.progress(100)
-                            status_text.success(" Successfully loaded Turkey electricity consumption data!")
-                            
-                            # Keep the success message visible briefly before rerun
-                            time.sleep(1.5)
                             st.rerun()
                         else:
-                            progress_bar.empty()
-                            status_text.error(" Failed to fetch data. Please check your API access and try again.")
-                            
-                except Exception as e:
-                    progress_bar.empty()
-                    status_text.error(f" Error: {str(e)}")
-            else:
-                st.info("↑ Select date range and click 'Fetch Data' button")
+                            st.error("Failed to connect to EPIAS.")
+            
+            elif "World Bank" in source:
+                 if st.button("Fetch World Bank Data", key="dl_wb", width="stretch"):
+                    with st.spinner("Accessing World Bank API..."):
+                        energy_df = open_data.fetch_world_bank_energy()
+                        if energy_df is not None:
+                            df = energy_df.copy()
+                            df["timestamp"] = pd.to_datetime(df["year"], format="%Y")
+                            df["device_id"] = df["country"]
+                            df["consumption_kWh"] = df["consumption_kwh_per_capita"]
+                            st.session_state.df = df[["timestamp", "device_id", "consumption_kWh"]].dropna()
+                            st.rerun()
+
+        with col_detais:
+            # Dynamic Info Card based on selection
+            if "UCI Household" in source:
+                st.markdown("""
+                <div class="info-card">
+                    <h4>Dataset Snapshot</h4>
+                    <div class="metric-value">2M+</div>
+                    <p>Individual measurement records</p>
+                    <div style="margin-top:1rem; border-top:1px solid #eee; padding-top:1rem;">
+                        <p style="font-size:0.9rem; color:#666;"><strong>Contains:</strong><br>Global active power, reactive power, voltage, and intensity measurements.</p>
+                        <p style="font-size:0.9rem; color:#666;"><strong>Best for:</strong><br>Deep learning, rigorous statistical analysis.</p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            elif "EPIAS Turkey" in source:
+                 st.markdown("""
+                <div class="info-card">
+                    <h4>Real-Time Feed</h4>
+                    <div class="metric-value">Live</div>
+                    <p>Energy Exchange Istanbul</p>
+                    <div style="margin-top:1rem; border-top:1px solid #eee; padding-top:1rem;">
+                        <p style="font-size:0.9rem; color:#666;"><strong>Contains:</strong><br>Hourly electricity consumption data (MWh) across Turkey.</p>
+                        <p style="font-size:0.9rem; color:#666;"><strong>Best for:</strong><br>Market analysis, trend forecasting.</p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            elif "World Bank" in source:
+                 st.markdown("""
+                <div class="info-card">
+                    <h4>Global Indicators</h4>
+                    <div class="metric-value">190+</div>
+                    <p>Countries & Regions</p>
+                    <div style="margin-top:1rem; border-top:1px solid #eee; padding-top:1rem;">
+                        <p style="font-size:0.9rem; color:#666;"><strong>Contains:</strong><br>Annual energy use metrics per capita.</p>
+                        <p style="font-size:0.9rem; color:#666;"><strong>Best for:</strong><br>Macro-economic analysis.</p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+
+    # --- Mode: Upload ---
+    elif st.session_state.data_mode == 'upload':
+        c1, c2 = st.columns([1, 5])
+        with c1:
+            if st.button("← Back", key="back_btn_up"):
+                st.session_state.data_mode = None
+                st.rerun()
+            
+        st.markdown("<h3>Upload Your Data</h3>", unsafe_allow_html=True)
+        st.markdown("<br>", unsafe_allow_html=True)
         
-        elif "World Bank" in source:
-            if st.sidebar.button("Fetch World Bank Data"):
-                # Show loading during actual data fetching
-                with st.sidebar.spinner("Connecting to World Bank API..."):
-                    energy_df = open_data.fetch_world_bank_energy()
-                if energy_df is not None:
-                    st.success(f"✓ World Bank data loaded! {len(energy_df)} records")
-                    df = energy_df.copy()
-                    df["timestamp"] = pd.to_datetime(df["year"], format="%Y")
-                    df["device_id"] = df["country"]
-                    df["consumption_kWh"] = df["consumption_kwh_per_capita"]
-                    st.session_state.df = df[["timestamp", "device_id", "consumption_kWh"]].dropna()
-                    if 'analysis' in st.session_state:
-                        del st.session_state.analysis
-                    st.rerun()
-                else:
-                    st.error("✗ Failed to fetch World Bank data.")
-            else:
-                st.info("↑ Click 'Fetch World Bank Data' button")
+        uploaded = st.file_uploader("", type=["csv"])
         
-        else:
-            st.info("Select a data source and click the corresponding button")
-    
-    else:  # Upload CSV
-        uploaded = st.sidebar.file_uploader("Upload CSV file", type=["csv"])
-        st.sidebar.download_button(
-            "Download sample CSV template",
-            "timestamp,device_id,consumption_kWh\n2026-01-01 00:00:00,Device_1,0.45\n2026-01-01 01:00:00,Device_1,0.51\n2026-01-01 00:00:00,Device_2,0.38\n",
-            file_name="sample_template.csv"
-        )
         if uploaded:
             st.session_state.df = pd.read_csv(uploaded)
-            if 'analysis' in st.session_state:
-                del st.session_state.analysis
-            st.success("✓ CSV data loaded.")
+            st.success("File uploaded successfully!")
+            time.sleep(1)
             st.rerun()
-        else:
-            st.markdown(
-                """
-                <div style='background-color:#fffbe6; color:#b8860b; padding:12px 18px; border-radius:6px; font-size:1.1rem; font-weight:bold; border:1px solid #ffe58f;'>
-                ⚠ Please upload a CSV file.
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+            
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.download_button(
+            "Download CSV Template",
+            "timestamp,device_id,consumption_kWh\n2026-01-01 00:00:00,Device_1,0.45\n",
+            file_name="template.csv",
+        )
 
-else:
-    # Data is loaded, show analysis
+# --- DASHBOARD (DATA LOADED) ---
+def render_dashboard():
+    # Top Bar: Logo Left, New Analysis Right
+    c1, c2, c3 = st.columns([1, 4, 1])
+    with c1:
+        st.image("assets/octogreen-logo.png", width=120)
+    with c3:
+        if st.button("New Analysis"):
+            reset_app()
+    
+    st.divider()
+    
     df = st.session_state.df
     
-    # Simple header for analysis page
-    st.markdown("<h1 style='text-align:center;'>OctoGreen: Smart Energy Analysis Platform</h1>", unsafe_allow_html=True)
+    # Feature Cards Row using CSS Grid inside Markdown or Columns
+    st.markdown("### Dataset Overview")
     
-    # Data Preview with white theme
-    st.markdown("""
-    <div style='margin: 2rem 0 1rem 0;'>
-        <h2 style='color: #1f2937; border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem;'>Data Preview</h2>
-    </div>
-    """, unsafe_allow_html=True)
+    m1, m2, m3 = st.columns(3)
+    with m1:
+        st.metric("Total Records", f"{len(df):,}")
+    with m2:
+        if 'timestamp' in df.columns:
+            st.metric("Timeline", "Time Series Data")
+        else:
+            st.metric("Structure", "Tabular")
+    with m3:
+        if 'device_id' in df.columns:
+            st.metric("Sources", f"{df['device_id'].nunique()}")
     
-    # Style the dataframe with white theme
-    st.markdown("""
-    <style>
-        .stDataFrame {
-            border: 1px solid #e5e7eb !important;
-            border-radius: 8px !important;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
-        }
-        .stDataFrame th {
-            background-color: #f9fafb !important;
-            color: #1f2937 !important;
-            font-weight: 600 !important;
-            border-bottom: 1px solid #e5e7eb !important;
-        }
-        .stDataFrame td {
-            color: #1f2937 !important;
-            border-bottom: 1px solid #f3f4f6 !important;
-        }
-        .stDataFrame tr:hover {
-            background-color: #f9fafb !important;
-        }
-        .stDataFrame thead th {
-            position: sticky;
-            top: 0;
-            z-index: 1;
-        }
-    </style>
-    """, unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # Main Content Area
+    col_main, col_side = st.columns([2, 1], gap="large")
     
-    # Display the dataframe with some additional styling
-    st.dataframe(df.head().style.set_properties(**{
-        'background-color': 'white',
-        'color': '#1f2937',
-        'border': '1px solid white'
-    }))
-    
-    # AI Analysis
-    analysis = st.session_state.get('analysis')
-    if analysis is None:
-        with st.spinner("Running AI analysis..."):
-            analysis = ai_analysis.analyze(df)
-        st.session_state.analysis = analysis
-    st.markdown("<h2>AI Analysis Results and Recommendations</h2>", unsafe_allow_html=True)
-    st.write(analysis["summary"])
-    st.write(analysis["recommendations"])
-    
-    # Reporting
-    st.markdown("<h2>Download Report</h2>", unsafe_allow_html=True)
-    report_tools.download_buttons(df, analysis)
-    
-    # Visualization
-    st.markdown("<h2>Consumption Charts and Carbon Footprint</h2>", unsafe_allow_html=True)
-    report_tools.visualize(df, analysis)
+    with col_main:
+        # AI Analysis Section
+        st.subheader("AI Analysis")
+        
+        analysis = st.session_state.get('analysis')
+        if analysis is None:
+            with st.spinner("Processing advanced analytics..."):
+                analysis = ai_analysis.analyze(df)
+            st.session_state.analysis = analysis
+            
+        # Display AI summary in a collapsible expander
+        with st.expander("VIEW DETAILED AI ANALYSIS", expanded=False):
+            st.markdown(f"""
+            <div style="background:white; padding:1.5rem; border-radius:12px; border:1px solid #e5e5e5; margin-bottom:1rem;">
+                <p style="color:#1D1D1F; font-size:1.05rem; line-height:1.6;">{analysis['summary']}</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        # Visualization Header with custom styling to match other headers
+        st.markdown("<h3 style='color:#1D1D1F; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; margin-top:2rem;'>Visualization</h3>", unsafe_allow_html=True)
+        report_tools.visualize(df, analysis)
+
+    with col_side:
+        st.subheader("Key Findings")
+        st.info(analysis['recommendations'])
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.subheader("Export")
+        report_tools.download_buttons(df, analysis)
+
+
+# --- MAIN ROUTER ---
+if 'df' not in st.session_state:
+    render_selection_screen()
+else:
+    render_dashboard()
