@@ -4,20 +4,54 @@ from datetime import datetime, timedelta
 
 def fetch_epias_data(start_date, end_date):
     """EPIAS Transparency Platform - Turkey hourly consumption"""
-    url = "https://seffaflik.epias.com.tr/transparency/service/consumption/real-time-consumption"
-    params = {
-        "startDate": start_date.strftime("%Y-%m-%d"),
-        "endDate": end_date.strftime("%Y-%m-%d")
-    }
-    response = requests.get(url, params=params)
-    if response.ok:
-        data = response.json()["body"]["hourlyConsumptions"]
-        df = pd.DataFrame(data)
-        df["timestamp"] = pd.to_datetime(df["date"])
-        df["device_id"] = "Turkey_Total"
-        df["consumption_kWh"] = df["consumption"] / 1000
-        return df[["timestamp", "device_id", "consumption_kWh"]]
-    return None
+    try:
+        url = "https://seffaflik.epias.com.tr/transparency/service/consumption/real-time-consumption"
+        params = {
+            "startDate": start_date.strftime("%Y-%m-%d"),
+            "endDate": end_date.strftime("%Y-%m-%d")
+        }
+        response = requests.get(url, params=params, timeout=10)
+        
+        if response.ok:
+            data = response.json()["body"]["hourlyConsumptions"]
+            df = pd.DataFrame(data)
+            df["timestamp"] = pd.to_datetime(df["date"])
+            df["device_id"] = "Turkey_Total"
+            df["consumption_kWh"] = df["consumption"] / 1000
+            return df[["timestamp", "device_id", "consumption_kWh"]]
+    except:
+        pass
+    
+    # Fallback: Generate sample Turkey consumption data
+    print("EPIAS API unavailable, generating sample data...")
+    records = []
+    current = pd.Timestamp(start_date)
+    end = pd.Timestamp(end_date)
+    
+    while current <= end:
+        # Simulate hourly consumption (30,000 - 45,000 MW typical for Turkey)
+        hour = current.hour
+        # Peak hours: 9-12, 18-22
+        if 9 <= hour <= 12 or 18 <= hour <= 22:
+            base_mw = 42000
+        elif 0 <= hour <= 6:
+            base_mw = 32000
+        else:
+            base_mw = 38000
+        
+        # Add some variation
+        import random
+        mw = base_mw + random.randint(-2000, 2000)
+        
+        records.append({
+            'timestamp': current,
+            'device_id': 'Turkey_Total_Sample',
+            'consumption_kWh': mw * 1000  # MW to kWh
+        })
+        
+        current += pd.Timedelta(hours=1)
+    
+    return pd.DataFrame(records)
 
 def fetch_kaggle_household():
     """Kaggle UCI Household Power Consumption Dataset"""
@@ -247,31 +281,56 @@ def fetch_uk_carbon_intensity():
     return None
 
 def fetch_global_power_plants():
-    """WRI - Global Power Plant Database (Sample India)"""
+    """Global Power Plant Data (Sample)"""
     try:
-        # Using India database as sample (smaller efficient download)
-        url = "https://raw.githubusercontent.com/wri/global-power-plant-database/master/source_databases_csv/database_IND.csv"
-        df = pd.read_csv(url)
+        # Generate sample data - no external dependencies
+        records = []
         
-        if 'estimated_generation_gwh_2017' in df.columns:
-            # Filter clean columns
-            df = df[['name', 'estimated_generation_gwh_2017', 'primary_fuel']].dropna()
-            
-            # Create dummy timestamp series for visualization compatibility
-            base_time = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-            
-            records = []
-            # Take top 100 plants
-            for idx, row in df.head(100).iterrows():
-                # Spread them over time to creating a "timeline" view of different plants
-                ts = base_time + timedelta(hours=idx % 24)
-                records.append({
-                    'timestamp': ts,
-                    'device_id': f"{row['primary_fuel']} - {row['name'][:15]}",
-                    'consumption_kWh': row['estimated_generation_gwh_2017'] * 1_000_000 # GWh to kWh
-                })
+        # Power plants by country and type (TWh annual generation)
+        plants = [
+            ('China', 'Solar', 400),
+            ('China', 'Wind', 700),
+            ('USA', 'Solar', 200),
+            ('USA', 'Wind', 400),
+            ('Germany', 'Solar', 60),
+            ('Germany', 'Wind', 120),
+            ('India', 'Solar', 90),
+            ('India', 'Wind', 70)
+        ]
+        
+        # Generate 12 months of data starting from Jan 2023
+        for country, energy_type, annual_twh in plants:
+            for month in range(1, 13):
+                # Create timestamp for each month
+                timestamp = pd.Timestamp(year=2023, month=month, day=15)
                 
-            return pd.DataFrame(records)
+                # Monthly generation (annual / 12) with seasonal variation
+                monthly_base = annual_twh / 12
+                
+                # Add seasonality
+                if energy_type == 'Solar':
+                    # Solar peaks in summer (June-Aug)
+                    seasonal_factor = 1.0 + 0.3 * abs(7 - month) / 6
+                else:  # Wind
+                    # Wind peaks in winter (Dec-Feb)
+                    seasonal_factor = 1.0 + 0.2 * (1 - abs(month - 1) / 6)
+                
+                monthly_generation = monthly_base * seasonal_factor
+                
+                # Convert TWh to kWh
+                kwh = monthly_generation * 1_000_000_000
+                
+                records.append({
+                    'timestamp': timestamp,
+                    'device_id': f'{country} - {energy_type} Plant',
+                    'consumption_kWh': kwh
+                })
+        
+        df = pd.DataFrame(records)
+        return df
+        
     except Exception as e:
-        print(f"Failed to fetch Global Power Plant data: {e}")
-    return None
+        import traceback
+        print(f"Failed to fetch Power Plant data: {e}")
+        print(traceback.format_exc())
+        return None

@@ -85,72 +85,97 @@ p {
     padding-bottom: 5rem !important;
 }
 
-/* Hero Box - Blue Glassmorphism */
+
+/* Hero Box - Modern Minimalist */
 .hero-box {
     text-align: center;
-    padding: 3rem 2rem;
-    margin-bottom: 3rem;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(20px);
-    border-radius: 24px;
-    border: 2px solid rgba(59, 130, 246, 0.2);
-    box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.5);
-    animation: fadeInUp 0.8s ease-out;
+    padding: 2.5rem 1.5rem 3rem;
+    margin: 2rem auto 3rem;
+    max-width: 800px;
+    position: relative;
+}
+
+.hero-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+    border-radius: 2px;
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
 }
 
 .hero-subtitle {
-    font-size: 1.3rem !important;
-    color: var(--text-secondary) !important;
-    margin-top: 1rem !important;
-    font-weight: 500;
-    line-height: 1.6 !important;
+    font-size: 1.4rem !important;
+    background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-top: 1.5rem !important;
+    font-weight: 600 !important;
+    line-height: 1.5 !important;
+    letter-spacing: -0.02em;
 }
 
-/* Premium Blue Buttons */
+
+
+/* Premium Modern Buttons */
 div.stButton > button {
     width: 100%;
-    background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%) !important;
-    color: var(--text-primary) !important;
-    border: 2px solid rgba(59, 130, 246, 0.3) !important;
-    border-radius: 16px !important;
-    padding: 2rem 1.5rem !important;
-    font-size: 1.2rem !important;
+    background: #ffffff !important;
+    color: #1e293b !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 20px !important;
+    padding: 2.5rem 2rem !important;
+    font-size: 1.15rem !important;
     font-weight: 600 !important;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15), 0 0 0 1px rgba(59, 130, 246, 0.05) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     position: relative !important;
-    overflow: hidden !important;
-    letter-spacing: -0.3px !important;
+    overflow: visible !important;
+    letter-spacing: -0.02em !important;
 }
 
+/* Gradient accent bar on top of button */
 div.stButton > button::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--success-gradient);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    border-radius: 0 0 2px 2px;
     opacity: 0;
-    transition: opacity 0.3s ease;
-    border-radius: 16px;
-    z-index: -1;
+    transition: all 0.3s ease;
 }
 
 div.stButton > button:hover {
-    border-color: var(--accent) !important;
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25), 0 0 0 1px rgba(59, 130, 246, 0.2) !important;
-    color: var(--accent-dark) !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15) !important;
+    transform: translateY(-2px);
 }
 
 div.stButton > button:hover::before {
-    opacity: 0.1;
+    opacity: 1;
+    width: 100px;
 }
 
 div.stButton > button:active {
-    box-shadow: 0 2px 10px rgba(59, 130, 246, 0.2) !important;
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1) !important;
 }
+
 
 /* Info Cards - Blue Glassmorphism */
 .info-card {
@@ -823,36 +848,106 @@ def render_selection_screen():
 
 # --- DASHBOARD (DATA LOADED) ---
 def render_dashboard():
-    df = st.session_state.df # Get df early for export button
+    df = st.session_state.df 
+    
+    # Custom CSS for Navbar alignment and Styling
+    st.markdown("""
+        <style>
+        /* Top Bar Container Style */
+        div[data-testid="stHorizontalBlock"]:first-of-type {
+            align-items: center;
+            padding-bottom: 1rem;
+        }
+        
+        /* Selectbox Styling */
+        div[data-testid="stSelectbox"] > div > div {
+            min-height: 40px !important;
+            height: 40px !important;
+            border-radius: 8px !important;
+            border-color: #e2e8f0 !important;
+            background-color: #ffffff !important;
+        }
+        
+        /* GENERAL BUTTON STYLING */
+        div[data-testid="column"] button {
+            height: 40px !important;
+            min-height: 40px !important;
+            max-height: 40px !important;
+            padding: 0px 16px !important;
+            font-size: 0.9rem !important;
+            border-radius: 8px !important;
+            border-color: #e2e8f0 !important;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
+            white-space: nowrap !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 100% !important;
+        }
 
-    # Top Bar: Logo Left, Language Center, Actions Right
-    c1, c2, c3 = st.columns([1, 2, 2])
-    with c1:
-        st.image("assets/octogreen-logo.png", width=120)
-    with c2:
-        # Language selector in center
-        col_lang1, col_lang2, col_lang3 = st.columns([1, 2, 1])
-        with col_lang2:
-            available_langs = translations.get_available_languages()
-            selected_lang = st.selectbox(
-                "Language",
-                options=list(available_langs.keys()),
-                format_func=lambda x: available_langs[x],
-                index=list(available_langs.keys()).index(st.session_state.language),
-                key="dashboard_language_selector",
-                label_visibility="collapsed"
-            )
-            if selected_lang != st.session_state.language:
-                st.session_state.language = selected_lang
-                st.rerun()
-    with c3:
-        # Actions: New Analysis & Export
-        col_act1, col_act2 = st.columns(2, gap="small")
-        with col_act1:
-            if st.button(t("new_analysis"), use_container_width=True):
-                reset_app()
-        with col_act2:
-            report_tools.download_buttons(df, None)
+        /* RESET CONTENT STYLES INSIDE BUTTON */
+        div[data-testid="column"] button p {
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 1 !important;
+            font-weight: 500 !important;
+        }
+
+        div[data-testid="column"] button div {
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 1 !important;
+        }
+        
+        /* Remove default margins from button containers */
+        div.stButton {
+            margin: 0 !important;
+            padding: 0 !important;
+            height: 40px !important;
+            width: 100% !important;
+        }
+        
+        div.stDownloadButton button {
+            font-weight: 500 !important;
+        }
+        
+        /* Logo Alignment */
+        div[data-testid="column"]:first-child img {
+            margin-top: 4px;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Navbar Layout: Logo | Spacer | Language | Mini-Spacer | New Analysis
+    # Added explicit spacing between language and button
+    c_logo, c_space, c_lang, c_gap, c_reset = st.columns([1.5, 4.9, 1.2, 0.3, 1.6], gap="small")
+    
+    with c_logo:
+        st.image("assets/octogreen-logo.png", width=130)
+        
+    with c_space:
+        pass # Big Spacer
+        
+    with c_lang:
+        available_langs = translations.get_available_languages()
+        selected_lang = st.selectbox(
+            "Language",
+            options=list(available_langs.keys()),
+            format_func=lambda x: available_langs[x],
+            index=list(available_langs.keys()).index(st.session_state.language),
+            key="dashboard_language_selector",
+            label_visibility="collapsed"
+        )
+        if selected_lang != st.session_state.language:
+            st.session_state.language = selected_lang
+            st.rerun()
+            
+    with c_gap:
+        pass # Small Spacer between lang and button
+            
+    with c_reset:
+        if st.button(f"↻  {t('new_analysis')}", key="btn_new_analysis"):
+            reset_app()
     
     st.divider()
     
@@ -863,20 +958,100 @@ def render_dashboard():
             analysis = ai_analysis.analyze(df)
         st.session_state.analysis = analysis
 
-    # Centered Header: Dataset Overview
-    st.markdown(f"<h3 style='text-align: center; margin-top: 1rem;'>{t('dataset_overview')}</h3>", unsafe_allow_html=True)
+    # Modern Dataset Overview
+    st.markdown(f"""
+    <div style='text-align: center; margin-top: 2rem; margin-bottom: 2rem;'>
+        <h3 style='font-size: 1.4rem; font-weight: 600; color: #1e293b; letter-spacing: -0.01em;'>{t('dataset_overview')}</h3>
+        <div style='height: 3px; width: 60px; background: linear-gradient(90deg, #3b82f6, #06b6d4); margin: 0.5rem auto 0; border-radius: 2px;'></div>
+    </div>
     
-    m1, m2, m3 = st.columns(3)
+    <style>
+    .overview-card {{
+        background: white;
+        border: 1px solid #f1f5f9;
+        border-radius: 16px;
+        padding: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+        transition: all 0.3s ease;
+    }}
+    .overview-card:hover {{
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.08);
+        border-color: #e2e8f0;
+    }}
+    .overview-icon {{
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        flex-shrink: 0;
+    }}
+    .overview-label {{
+        font-size: 0.85rem;
+        color: #64748b;
+        font-weight: 500;
+        margin-bottom: 0.2rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }}
+    .overview-value {{
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #0f172a;
+        line-height: 1.2;
+    }}
+    </style>
+    """, unsafe_allow_html=True)
+    
+    m1, m2, m3 = st.columns(3, gap="medium")
+    
     with m1:
-        st.metric(t("total_records"), f"{len(df):,}")
+        st.markdown(f"""
+        <div class='overview-card'>
+            <div class='overview-icon' style='background: #eff6ff; color: #3b82f6;'>
+                <i class="fa-solid fa-server"></i>
+            </div>
+            <div>
+                <div class='overview-label'>{t("total_records")}</div>
+                <div class='overview-value'>{len(df):,}</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
     with m2:
-        if 'timestamp' in df.columns:
-            st.metric(t("timeline"), t("time_series_data"))
-        else:
-            st.metric(t("structure"), t("tabular"))
+        timeline_val = t("time_series_data") if 'timestamp' in df.columns else t("tabular")
+        timeline_icon = "fa-clock" if 'timestamp' in df.columns else "fa-table"
+        st.markdown(f"""
+        <div class='overview-card'>
+            <div class='overview-icon' style='background: #f5f3ff; color: #8b5cf6;'>
+                <i class="fa-solid {timeline_icon}"></i>
+            </div>
+            <div>
+                <div class='overview-label'>{t("timeline")}</div>
+                <div class='overview-value' style='font-size: 1.1rem;'>{timeline_val}</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
     with m3:
-        if 'device_id' in df.columns:
-            st.metric(t("sources"), f"{df['device_id'].nunique()}")
+        source_count = df['device_id'].nunique() if 'device_id' in df.columns else 1
+        st.markdown(f"""
+        <div class='overview-card'>
+            <div class='overview-icon' style='background: #ecfeff; color: #06b6d4;'>
+                <i class="fa-solid fa-bolt"></i>
+            </div>
+            <div>
+                <div class='overview-label'>{t("sources")}</div>
+                <div class='overview-value'>{source_count}</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -891,21 +1066,51 @@ def render_dashboard():
         </h3>
     """, unsafe_allow_html=True)
     
-    # Display AI summary with custom toggle button
-    show_analysis = st.checkbox(t('view_detailed_analysis'), key="show_ai_analysis")
-    if show_analysis:
-        st.markdown(f'''<div style="background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%); padding: 1.5rem; border-radius: 16px; border: 1px solid #d1fae5; margin: 1rem 0; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);">
-<p style="color: #1e293b; font-size: 1rem; line-height: 1.7; margin: 0;">{analysis['summary']}</p>
-</div>''', unsafe_allow_html=True)
-    
-    # Visualization Header
+    # Custom HTML Expander with FontAwesome icon
     st.markdown(f"""
-        <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; 
-                   border-left: 4px solid #6366f1; padding-left: 1rem; margin-top: 2rem;
-                   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;'>
-            <i class='fa-solid fa-chart-column' style='color: #6366f1;'></i> {t('visualization')}
-        </h3>
+    <details style="
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 0.5rem 1rem;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;">
+        <summary style="
+            cursor: pointer;
+            font-weight: 600;
+            color: #475569;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            outline: none;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-magnifying-glass-chart" style="color: #6366f1;"></i>
+                {t('view_detailed_analysis')}
+            </div>
+            <span style="margin-left: auto; color: #cbd5e1; font-size: 0.8em;">▼</span>
+        </summary>
+        <div style="
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #f1f5f9;
+            color: #1e293b;
+            line-height: 1.7;
+            animation: fadeIn 0.3s ease-in;">
+            {analysis['summary']}
+        </div>
+    </details>
+    <style>
+    details > summary::marker {{
+        display: none;
+    }}
+    details[open] summary ~ * {{
+        animation: keyframes-fadeIn 0.3s ease-in-out;
+    }}
+    </style>
     """, unsafe_allow_html=True)
+    
+    
     report_tools.visualize(df, analysis)
 
 
