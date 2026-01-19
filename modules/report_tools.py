@@ -8,10 +8,14 @@ def t(key):
     return translations.get_text(key, st.session_state.get('language', 'en'))
 
 def download_buttons(df, analysis):
-    st.download_button(t("download_csv"), df.to_csv(index=False), file_name="data.csv")
-    if st.button(t("download_pdf")):
-        pdf_bytes = generate_pdf_report(df, analysis)
-        st.download_button(t("download_pdf_generated"), pdf_bytes, file_name="report.pdf")
+    # Only CSV download for cleaner UX and to prevent auto-trigger issues
+    st.download_button(
+        f"📊 {t('download_csv')}", 
+        df.to_csv(index=False), 
+        file_name="data.csv", 
+        use_container_width=True, 
+        key="btn_download_csv"
+    )
 
 def visualize(df, analysis):
     import plotly.graph_objects as go
@@ -44,8 +48,7 @@ def visualize(df, analysis):
             linewidth=1,
             showline=True,
             mirror=True
-        ),
-        margin=dict(l=50, r=50, t=50, b=50)
+        )
     )
     
     
@@ -60,13 +63,13 @@ def visualize(df, analysis):
     
     # Enhanced Summary Metrics with new additions
     st.markdown(f"""
-        <div style='text-align: center; margin: 2rem 0 1.5rem 0;'>
-            <h2 style='background: linear-gradient(135deg, #0071e3 0%, #0056b3 100%); 
-                       -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-                       font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;'>
-                <i class='fa-solid fa-chart-line' style='background: linear-gradient(135deg, #0071e3 0%, #0056b3 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;'></i> {t('performance_insights')}
-            </h2>
-            <p style='color: #86868b; font-size: 1.1rem;'>{t('key_metrics')}</p>
+        <div style='margin-top: 2rem; margin-bottom: 1.5rem;'>
+            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; 
+                       border-left: 4px solid #0071e3; padding-left: 1rem;
+                       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;'>
+                <i class='fa-solid fa-chart-line' style='color: #0071e3;'></i> {t('performance_insights')}
+            </h3>
+            <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>{t('key_metrics')}</p>
         </div>
     """, unsafe_allow_html=True)
     
@@ -240,13 +243,13 @@ def visualize(df, analysis):
     
     # ========== SAVINGS OPPORTUNITIES SECTION ==========
     st.markdown(f"""
-        <div style='text-align: center; margin: 4rem 0 2rem 0;'>
-            <h2 style='background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
-                       -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-                       font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;'>
-                <i class='fa-solid fa-lightbulb' style='background: linear-gradient(135deg, #10b981 0%, #059669 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;'></i> {t('savings_opportunities')}
-            </h2>
-            <p style='color: #86868b; font-size: 1.1rem;'>{t('savings_opportunities_desc')}</p>
+        <div style='margin-top: 3rem; margin-bottom: 1.5rem;'>
+            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; 
+                       border-left: 4px solid #10b981; padding-left: 1rem;
+                       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;'>
+                <i class='fa-solid fa-lightbulb' style='color: #10b981;'></i> {t('savings_opportunities')}
+            </h3>
+            <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>{t('savings_opportunities_desc')}</p>
         </div>
     """, unsafe_allow_html=True)
     
@@ -416,7 +419,7 @@ def visualize(df, analysis):
                        border-left: 4px solid #0071e3; padding-left: 1rem;'>
                 <i class='fa-solid fa-chart-area' style='color: #0071e3;'></i> {t('consumption_timeline')}
             </h3>
-            <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem;'>
+            <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>
                 {t('realtime_usage')}
             </p>
         </div>
@@ -437,67 +440,76 @@ def visualize(df, analysis):
     )
     st.plotly_chart(fig, use_container_width=True)
     
-    # Daily Aggregation
-    st.markdown(f"""
-        <div style='margin-top: 3rem; margin-bottom: 1rem;'>
-            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; 
-                       border-left: 4px solid #10b981; padding-left: 1rem;'>
-                <i class='fa-solid fa-calendar-days' style='color: #10b981;'></i> {t('daily_energy_profile')}
-            </h3>
-            <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem;'>
-                {t('total_consumption_day')}
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
+    # Create 2-column grid for Daily & Hourly plots
+    col_grid1, col_grid2 = st.columns(2, gap="medium")
     
-    daily = analysis['summary']['daily_total']
-    fig2 = px.bar(x=list(daily.keys()), y=list(daily.values()), 
-                 labels={'x':t('day'), 'y':t('total_kwh')})
-    fig2.update_layout(
-        **common_layout,
-        xaxis_title=t('day'),
-        yaxis_title=t('total_kwh'),
-        showlegend=False,
-        height=400
-    )
-    fig2.update_traces(
-        marker_color='#10b981',
-        marker_line_color='#0d8f6e',
-        marker_line_width=1.5,
-        opacity=0.8
-    )
-    st.plotly_chart(fig2, use_container_width=True)
-    
-    # Hourly Pattern Analysis
-    st.markdown(f"""
-        <div style='margin-top: 3rem; margin-bottom: 1rem;'>
-            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; 
-                       border-left: 4px solid #3b82f6; padding-left: 1rem;'>
-                <i class='fa-solid fa-clock' style='color: #3b82f6;'></i> {t('hourly_usage_patterns')}
-            </h3>
-            <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem;'>
-                {t('average_by_hour')}
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    hourly = analysis['summary']['hourly_avg']
-    fig3 = px.bar(x=list(hourly.keys()), y=list(hourly.values()), 
-                 labels={'x':t('hour'), 'y':t('average_kwh')})
-    fig3.update_layout(
-        **common_layout,
-        xaxis_title=t('hour'),
-        yaxis_title=t('average_kwh'),
-        showlegend=False,
-        height=400
-    )
-    fig3.update_traces(
-        marker_color='#3b82f6',
-        marker_line_color='#2563eb',
-        marker_line_width=1.5,
-        opacity=0.8
-    )
-    st.plotly_chart(fig3, use_container_width=True)
+    with col_grid1:
+        # Daily Aggregation
+        st.markdown(f"""
+            <div style='margin-top: 1rem; margin-bottom: 1rem;'>
+                <h3 style='color: #1d1d1f; font-size: 1.3rem; font-weight: 600; 
+                           border-left: 4px solid #10b981; padding-left: 1rem;
+                           font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;'>
+                    <i class='fa-solid fa-calendar-days' style='color: #10b981;'></i> {t('daily_energy_profile')}
+                </h3>
+                <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>
+                    {t('total_consumption_day')}
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        daily = analysis['summary']['daily_total']
+        fig2 = px.bar(x=list(daily.keys()), y=list(daily.values()), 
+                     labels={'x':t('day'), 'y':t('total_kwh')})
+        fig2.update_layout(
+            **common_layout,
+            xaxis_title=t('day'),
+            yaxis_title=t('total_kwh'),
+            showlegend=False,
+            height=350,
+            margin=dict(t=20, b=0, l=0, r=0)
+        )
+        fig2.update_traces(
+            marker_color='#10b981',
+            marker_line_color='#0d8f6e',
+            marker_line_width=1.5,
+            opacity=0.8
+        )
+        st.plotly_chart(fig2, use_container_width=True)
+        
+    with col_grid2:
+        # Hourly Pattern Analysis
+        st.markdown(f"""
+            <div style='margin-top: 1rem; margin-bottom: 1rem;'>
+                <h3 style='color: #1d1d1f; font-size: 1.3rem; font-weight: 600; 
+                           border-left: 4px solid #3b82f6; padding-left: 1rem;
+                           font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;'>
+                    <i class='fa-solid fa-clock' style='color: #3b82f6;'></i> {t('hourly_usage_patterns')}
+                </h3>
+                <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>
+                    {t('average_by_hour')}
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        hourly = analysis['summary']['hourly_avg']
+        fig3 = px.bar(x=list(hourly.keys()), y=list(hourly.values()), 
+                     labels={'x':t('hour'), 'y':t('average_kwh')})
+        fig3.update_layout(
+            **common_layout,
+            xaxis_title=t('hour'),
+            yaxis_title=t('average_kwh'),
+            showlegend=False,
+            height=350,
+            margin=dict(t=20, b=0, l=0, r=0)
+        )
+        fig3.update_traces(
+            marker_color='#3b82f6',
+            marker_line_color='#2563eb',
+            marker_line_width=1.5,
+            opacity=0.8
+        )
+        st.plotly_chart(fig3, use_container_width=True)
     
     # Anomaly Detection
     st.markdown(f"""
@@ -506,7 +518,7 @@ def visualize(df, analysis):
                        border-left: 4px solid #ef4444; padding-left: 1rem;'>
                 <i class='fa-solid fa-magnifying-glass-chart' style='color: #ef4444;'></i> {t('anomaly_detection')}
             </h3>
-            <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem;'>
+            <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>
                 {t('unusual_patterns')}
             </p>
         </div>
@@ -611,6 +623,7 @@ def visualize(df, analysis):
     else:
         st.info(t("no_anomalies"))
 
+@st.cache_data
 def generate_pdf_report(df, analysis):
     from fpdf import FPDF
     

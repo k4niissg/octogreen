@@ -39,7 +39,7 @@ st.markdown("""
 /* Force Light Theme with Blue Tones */
 html, body, .stApp {
     background: var(--bg-gradient) !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'Segoe UI', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Segoe UI', 'Helvetica Neue', 'Segoe UI', sans-serif !important;
     color: var(--text-primary) !important;
 }
 
@@ -52,7 +52,7 @@ header {visibility: hidden;}
 /* Typography - SF Pro Style */
 h1, h2, h3 {
     text-align: center !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     color: var(--text-primary) !important;
     font-weight: 700 !important;
     letter-spacing: -0.5px !important;
@@ -75,7 +75,7 @@ p {
     font-size: 1.05rem !important;
     line-height: 1.6 !important;
     color: var(--text-secondary) !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 
 /* Container */
@@ -116,7 +116,7 @@ div.stButton > button {
     padding: 2rem 1.5rem !important;
     font-size: 1.2rem !important;
     font-weight: 600 !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15), 0 0 0 1px rgba(59, 130, 246, 0.05) !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     position: relative !important;
@@ -140,8 +140,7 @@ div.stButton > button::before {
 
 div.stButton > button:hover {
     border-color: var(--accent) !important;
-    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.3), 0 0 0 1px rgba(59, 130, 246, 0.2) !important;
-    transform: translateY(-4px) scale(1.02) !important;
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25), 0 0 0 1px rgba(59, 130, 246, 0.2) !important;
     color: var(--accent-dark) !important;
 }
 
@@ -150,7 +149,7 @@ div.stButton > button:hover::before {
 }
 
 div.stButton > button:active {
-    transform: translateY(-2px) scale(1.01) !important;
+    box-shadow: 0 2px 10px rgba(59, 130, 246, 0.2) !important;
 }
 
 /* Info Cards - Blue Glassmorphism */
@@ -165,8 +164,7 @@ div.stButton > button:active {
 }
 
 .info-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 40px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 10px 35px rgba(59, 130, 246, 0.18);
     border-color: rgba(59, 130, 246, 0.4);
 }
 
@@ -177,14 +175,14 @@ div.stButton > button:active {
     text-transform: uppercase;
     letter-spacing: 1.5px;
     font-weight: 700 !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
 .info-card p,
 .info-card strong,
 .info-card span,
 .info-card div {
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
 .metric-value {
@@ -195,14 +193,14 @@ div.stButton > button:active {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin: 0.5rem 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
 .metric-label {
     color: var(--text-secondary) !important;
     font-size: 0.95rem !important;
     font-weight: 500 !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
 /* Inputs - Blue Theme */
@@ -214,7 +212,7 @@ input {
     color: var(--text-primary) !important;
     border: 2px solid rgba(59, 130, 246, 0.25) !important;
     border-radius: 14px !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     box-shadow: 0 2px 8px rgba(59, 130, 246, 0.08) !important;
     transition: all 0.3s ease !important;
     padding: 0.75rem 1rem !important;
@@ -243,7 +241,7 @@ div[data-baseweb="select"] div,
     color: #1e3a8a !important; 
     font-size: 1rem !important;
     font-weight: 500 !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
 /* Dropdown Menu (Popover) */
@@ -296,41 +294,52 @@ div[data-baseweb="option"][aria-selected="true"] {
     padding: 0.5rem 0.75rem !important;
 }
 
-/* Expander - Blue Premium Button */
-.streamlit-expanderHeader {
-    background: var(--success-gradient) !important;
+/* Expander - Premium Button Style */
+.streamlit-expanderHeader,
+[data-testid="stExpander"] > div:first-child,
+[data-testid="stExpander"] summary,
+[data-testid="stExpander"] [data-testid="stExpanderToggleIcon"] {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
     color: white !important;
     border: none !important;
     border-radius: 14px !important;
     font-weight: 600 !important;
-    font-size: 1.05rem !important;
-    padding: 1.3rem 1.5rem !important;
-    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3) !important;
+    font-size: 1rem !important;
+    padding: 1rem 1.25rem !important;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.25) !important;
     transition: all 0.3s ease !important;
-    letter-spacing: 0.3px !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
-.streamlit-expanderHeader:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 30px rgba(59, 130, 246, 0.4) !important;
+[data-testid="stExpander"] summary {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    cursor: pointer !important;
 }
 
+[data-testid="stExpander"] summary:hover {
+    box-shadow: 0 6px 25px rgba(59, 130, 246, 0.35) !important;
+}
+
+[data-testid="stExpander"] summary span,
+[data-testid="stExpander"] summary p,
+.streamlit-expanderHeader span,
+.streamlit-expanderHeader p {
+    color: white !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+[data-testid="stExpander"] svg,
 .streamlit-expanderHeader svg {
     fill: white !important;
+    color: white !important;
 }
 
-/* Expander text - ensure SF Pro */
-.streamlit-expanderHeader,
-.streamlit-expanderHeader p,
-.streamlit-expanderHeader span,
-.streamlit-expanderHeader div {
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
-}
-
-/* Protect Material Icons from font override */
+/* Hide material icon text artifacts */
+[data-testid="stExpander"] [data-testid="stMarkdownContainer"] p:empty,
 .streamlit-expanderHeader svg text {
-    font-family: 'Material Icons' !important;
+    display: none !important;
 }
 
 
@@ -346,7 +355,7 @@ div[data-baseweb="option"][aria-selected="true"] {
 [data-testid="stDataFrame"] div[role="columnheader"] {
     color: var(--text-primary) !important;
     background-color: #eff6ff !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
 /* Plotly Charts */
@@ -429,7 +438,7 @@ div[data-testid="stStatusWidget"] {
 [data-testid="stMetricValue"] *,
 [data-testid="stMetricLabel"] *,
 [data-testid="stMetricDelta"] * {
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Segoe UI', sans-serif !important;
 }
 
 [data-testid="stMetricValue"],
@@ -439,7 +448,7 @@ div[data-testid="stStatusWidget"] {
     font-size: 2rem !important;
     font-weight: 700 !important;
     color: var(--text-primary) !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
 [data-testid="stMetricLabel"],
@@ -449,19 +458,46 @@ div[data-testid="stStatusWidget"] {
     font-size: 0.95rem !important;
     font-weight: 600 !important;
     color: var(--text-secondary) !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
 /* Button text - force SF Pro */
 div.stButton > button,
 div.stButton > button span,
 div.stButton > button p {
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* Checkbox - Premium Style like Performance Insights heading */
+[data-testid="stCheckbox"] label,
+[data-testid="stCheckbox"] label span,
+[data-testid="stCheckbox"] label p {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    color: #0071e3 !important;
+    letter-spacing: -0.01em !important;
+}
+
+[data-testid="stCheckbox"] > label {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+    background: rgba(59, 130, 246, 0.05) !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(59, 130, 246, 0.15) !important;
+    cursor: pointer !important;
+}
+
+[data-testid="stCheckbox"] > label:hover {
+    background: rgba(59, 130, 246, 0.1) !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
 }
 
 /* Caption text under buttons */
 .stCaption, .stCaption p {
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     color: var(--text-secondary) !important;
 }
 
@@ -469,14 +505,14 @@ div.stButton > button p {
 .info-card p,
 .info-card strong,
 .info-card span {
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
 /* Download buttons - special styling */
 div.stDownloadButton > button,
 div.stDownloadButton > button span,
 div.stDownloadButton > button p {
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     font-weight: 600 !important;
 }
 
@@ -488,7 +524,7 @@ button div,
 [role="button"],
 [role="button"] span,
 [role="button"] p {
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
 
@@ -584,7 +620,9 @@ def render_selection_screen():
                 "World Bank - Energy & Carbon",
                 "IEA - Global Energy Data",
                 "US EIA - Electricity Stats",
-                "Eurostat - EU Energy"
+                "Eurostat - EU Energy",
+                "UK National Grid - Carbon Intensity",
+                "WRI - Global Power Plants"
             ], index=0)
             
 
@@ -661,6 +699,26 @@ def render_selection_screen():
                             st.rerun()
                         else:
                             st.error(t("failed_eurostat"))
+                            
+            elif "UK National Grid" in source:
+                if st.button(t("fetch_uk_carbon"), key="dl_uk", width="stretch"):
+                    with st.spinner("Fetching UK Carbon Data..."):
+                       df = open_data.fetch_uk_carbon_intensity()
+                       if df is not None:
+                           st.session_state.df = df
+                           st.rerun()
+                       else:
+                           st.error("Failed to fetch UK data")
+
+            elif "WRI" in source:
+                if st.button(t("fetch_power_plants"), key="dl_wri", width="stretch"):
+                     with st.spinner("Fetching Global Power Plants..."):
+                        df = open_data.fetch_global_power_plants()
+                        if df is not None:
+                            st.session_state.df = df
+                            st.rerun()
+                        else:
+                            st.error("Failed to fetch Power Plant data")
 
         with col_detais:
             if "UCI Household" in source:
@@ -765,13 +823,15 @@ def render_selection_screen():
 
 # --- DASHBOARD (DATA LOADED) ---
 def render_dashboard():
-    # Top Bar: Logo Left, Language Center, New Analysis Right
-    c1, c2, c3 = st.columns([1, 3, 1])
+    df = st.session_state.df # Get df early for export button
+
+    # Top Bar: Logo Left, Language Center, Actions Right
+    c1, c2, c3 = st.columns([1, 2, 2])
     with c1:
         st.image("assets/octogreen-logo.png", width=120)
     with c2:
         # Language selector in center
-        col_lang1, col_lang2, col_lang3 = st.columns([2, 1, 2])
+        col_lang1, col_lang2, col_lang3 = st.columns([1, 2, 1])
         with col_lang2:
             available_langs = translations.get_available_languages()
             selected_lang = st.selectbox(
@@ -786,15 +846,25 @@ def render_dashboard():
                 st.session_state.language = selected_lang
                 st.rerun()
     with c3:
-        if st.button(t("new_analysis")):
-            reset_app()
+        # Actions: New Analysis & Export
+        col_act1, col_act2 = st.columns(2, gap="small")
+        with col_act1:
+            if st.button(t("new_analysis"), use_container_width=True):
+                reset_app()
+        with col_act2:
+            report_tools.download_buttons(df, None)
     
     st.divider()
     
-    df = st.session_state.df
-    
-    # Feature Cards Row using CSS Grid inside Markdown or Columns
-    st.markdown(f"### {t('dataset_overview')}")
+    # Calculate analysis
+    analysis = st.session_state.get('analysis')
+    if analysis is None:
+        with st.spinner(t("processing_analytics")):
+            analysis = ai_analysis.analyze(df)
+        st.session_state.analysis = analysis
+
+    # Centered Header: Dataset Overview
+    st.markdown(f"<h3 style='text-align: center; margin-top: 1rem;'>{t('dataset_overview')}</h3>", unsafe_allow_html=True)
     
     m1, m2, m3 = st.columns(3)
     with m1:
@@ -810,66 +880,33 @@ def render_dashboard():
     
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # Main Content Area
-    col_main, col_side = st.columns([2, 1], gap="large")
+    # Main Content Area - Single Column Layout
     
-    with col_main:
-        # AI Analysis Section
-        st.markdown(f"""
-            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;'>
-                <i class='fa-solid fa-brain' style='color: #8b5cf6;'></i> {t("ai_analysis")}
-            </h3>
-        """, unsafe_allow_html=True)
-        
-        analysis = st.session_state.get('analysis')
-        if analysis is None:
-            with st.spinner(t("processing_analytics")):
-                analysis = ai_analysis.analyze(df)
-            st.session_state.analysis = analysis
-            
-        # Display AI summary in a collapsible expander
-        with st.expander(t("view_detailed_analysis"), expanded=False):
-            st.markdown(f"""
-            <div style="background:white; padding:1.5rem; border-radius:12px; border:2px solid rgba(16, 185, 129, 0.2); margin-bottom:1rem;">
-                <p style="color:#0f172a; font-size:1.05rem; line-height:1.6;">{analysis['summary']}</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        # Visualization Header with custom styling to match other headers
-        st.markdown(f"""
-            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; 
-                       border-left: 4px solid #6366f1; padding-left: 1rem; margin-top: 2rem;'>
-                <i class='fa-solid fa-chart-column' style='color: #6366f1;'></i> {t('visualization')}
-            </h3>
-        """, unsafe_allow_html=True)
-        report_tools.visualize(df, analysis)
-
-
-    with col_side:
-        st.markdown(f"""
-            <h3 style='color: #1d1d1f; font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem;'>
-                <i class='fa-solid fa-lightbulb' style='color: #f59e0b;'></i> {t("key_findings")}
-            </h3>
-        """, unsafe_allow_html=True)
-        
-        # Display recommendations as styled list
-        for i, rec in enumerate(analysis['recommendations'], 1):
-            st.markdown(f"""
-                <div style='background: #eff6ff; border-left: 3px solid #3b82f6; 
-                            padding: 0.8rem 1rem; margin-bottom: 0.8rem; border-radius: 6px;'>
-                    <p style='color: #1e3a8a; margin: 0; font-size: 0.95rem; line-height: 1.5;'>
-                        <strong>{i}.</strong> {rec}
-                    </p>
-                </div>
-            """, unsafe_allow_html=True)
-        
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown(f"""
-            <h3 style='color: #1d1d1f; font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem;'>
-                <i class='fa-solid fa-download' style='color: #10b981;'></i> {t("export")}
-            </h3>
-        """, unsafe_allow_html=True)
-        report_tools.download_buttons(df, analysis)
+    # AI Analysis Section
+    st.markdown(f"""
+        <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;
+                   border-left: 4px solid #8b5cf6; padding-left: 1rem;
+                   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;'>
+            <i class='fa-solid fa-brain' style='color: #8b5cf6;'></i> {t("ai_analysis")}
+        </h3>
+    """, unsafe_allow_html=True)
+    
+    # Display AI summary with custom toggle button
+    show_analysis = st.checkbox(t('view_detailed_analysis'), key="show_ai_analysis")
+    if show_analysis:
+        st.markdown(f'''<div style="background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%); padding: 1.5rem; border-radius: 16px; border: 1px solid #d1fae5; margin: 1rem 0; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);">
+<p style="color: #1e293b; font-size: 1rem; line-height: 1.7; margin: 0;">{analysis['summary']}</p>
+</div>''', unsafe_allow_html=True)
+    
+    # Visualization Header
+    st.markdown(f"""
+        <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; 
+                   border-left: 4px solid #6366f1; padding-left: 1rem; margin-top: 2rem;
+                   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;'>
+            <i class='fa-solid fa-chart-column' style='color: #6366f1;'></i> {t('visualization')}
+        </h3>
+    """, unsafe_allow_html=True)
+    report_tools.visualize(df, analysis)
 
 
 # --- MAIN ROUTER ---

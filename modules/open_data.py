@@ -172,15 +172,28 @@ def fetch_iea_global_energy():
 def fetch_us_eia_electricity():
     """US EIA - Energy Information Administration Electricity Data"""
     try:
-        # Using EIA open data API (sample endpoint)
-        url = "https://raw.githubusercontent.com/datasets/electricity-production-by-source/master/data/electricity-production-by-source.csv"
+        # Using OWID energy data as a reliable source for US
+        url = "https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv"
         df = pd.read_csv(url)
-        df['timestamp'] = pd.to_datetime(df['Year'], format='%Y')
-        df['device_id'] = 'USA_Total'
-        # Sum all production sources
-        numeric_cols = df.select_dtypes(include=['float64', 'int64']).columns
-        df['consumption_kWh'] = df[numeric_cols].sum(axis=1) * 1000000
-        return df[['timestamp', 'device_id', 'consumption_kWh']].dropna().head(1000)
+        
+        # Filter for United States
+        df = df[df['country'] == 'United States']
+        df = df[df['year'] >= 2010]
+        
+        df['timestamp'] = pd.to_datetime(df['year'], format='%Y')
+        df['device_id'] = 'USA_Total_EIA'
+        
+        # electricity_generation is in TWh, convert to kWh (1 TWh = 1,000,000,000 kWh)
+        # Using electricity_generation as proxy for consumption/production data
+        col = 'electricity_generation'
+        if col not in df.columns and 'electricity_demand' in df.columns:
+            col = 'electricity_demand'
+            
+        if col in df.columns:
+            df['consumption_kWh'] = df[col] * 1_000_000_000
+            return df[['timestamp', 'device_id', 'consumption_kWh']].dropna()
+            
+        return None
     except Exception as e:
         print(f"Failed to fetch US EIA data: {e}")
         return None
@@ -201,3 +214,64 @@ def fetch_eurostat_energy():
     except Exception as e:
         print(f"Failed to fetch Eurostat data: {e}")
         return None
+
+def fetch_uk_carbon_intensity():
+    """UK National Grid - Carbon Intensity Data"""
+    try:
+        now = datetime.now()
+        # Get yesterday and today
+        records = []
+        
+        for days_back in [1, 0]:
+            date_str = (now - timedelta(days=days_back)).strftime("%Y-%m-%d")
+            url = f"https://api.carbonintensity.org.uk/intensity/date/{date_str}"
+            
+            response = requests.get(url, timeout=10)
+            if response.ok:
+                data = response.json().get('data', [])
+                for item in data:
+                    if item.get('intensity', {}).get('actual') is not None:
+                        records.append({
+                            'timestamp': pd.to_datetime(item['from']),
+                            'device_id': 'UK_Grid_Carbon_Intensity',
+                            # Mapping Carbon Intensity (gCO2/kWh) to consumption field for visualization
+                            'consumption_kWh': item['intensity']['actual'] 
+                        })
+        
+        if records:
+            df = pd.DataFrame(records)
+            return df.dropna()
+            
+    except Exception as e:
+        print(f"Failed to fetch UK Carbon data: {e}")
+    return None
+
+def fetch_global_power_plants():
+    """WRI - Global Power Plant Database (Sample India)"""
+    try:
+        # Using India database as sample (smaller efficient download)
+        url = "https://raw.githubusercontent.com/wri/global-power-plant-database/master/source_databases_csv/database_IND.csv"
+        df = pd.read_csv(url)
+        
+        if 'estimated_generation_gwh_2017' in df.columns:
+            # Filter clean columns
+            df = df[['name', 'estimated_generation_gwh_2017', 'primary_fuel']].dropna()
+            
+            # Create dummy timestamp series for visualization compatibility
+            base_time = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+            
+            records = []
+            # Take top 100 plants
+            for idx, row in df.head(100).iterrows():
+                # Spread them over time to creating a "timeline" view of different plants
+                ts = base_time + timedelta(hours=idx % 24)
+                records.append({
+                    'timestamp': ts,
+                    'device_id': f"{row['primary_fuel']} - {row['name'][:15]}",
+                    'consumption_kWh': row['estimated_generation_gwh_2017'] * 1_000_000 # GWh to kWh
+                })
+                
+            return pd.DataFrame(records)
+    except Exception as e:
+        print(f"Failed to fetch Global Power Plant data: {e}")
+    return None
