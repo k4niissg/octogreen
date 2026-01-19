@@ -35,12 +35,23 @@ st.markdown("""
     --success-gradient: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
     --card-bg: rgba(255, 255, 255, 0.95);
 }
-
-/* Force Light Theme with Blue Tones */
-html, body, .stApp {
-    background: var(--bg-gradient) !important;
+/* Story Mode: Dark Smoke to Clear Blue Sky - Faster */
+.stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+    /* Reduced dark tones for faster transition to blue */
+    background: linear-gradient(120deg, #000000, #1e3a8a, #3b82f6, #93c5fd, #e0f2fe);
+    background-size: 400% 400%;
+    animation: darkToLight 5s cubic-bezier(0.4, 0, 0.2, 1) forwards; /* 5s Fast Awakening */
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Segoe UI', 'Helvetica Neue', 'Segoe UI', sans-serif !important;
     color: var(--text-primary) !important;
+}
+
+[data-testid="stHeader"] {
+    background: transparent !important;
+}
+
+@keyframes darkToLight {
+    0% { background-position: 0% 50%; }   /* Pitch Black / Smoke */
+    100% { background-position: 100% 50%; } /* Clear Blue Sky */
 }
 
 /* Hide Streamlit Elements */
@@ -114,66 +125,57 @@ p {
 }
 
 .hero-subtitle {
-    font-size: 1.4rem !important;
-    background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-top: 1.5rem !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
     font-weight: 600 !important;
+    color: #1e3a8a !important; /* Deep Blue to match buttons */
+    letter-spacing: -0.02em !important;
+    font-size: 1.4rem !important;
+    margin-top: 1.5rem !important;
     line-height: 1.5 !important;
-    letter-spacing: -0.02em;
 }
 
 
 
-/* Premium Modern Buttons */
+/* Premium Modern Buttons - STABLE & PROFESSIONAL */
+/* Premium Modern Buttons - ENHANCED & ICONIC */
 div.stButton > button {
     width: 100%;
-    background: #ffffff !important;
-    color: #1e293b !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 20px !important;
-    padding: 2.5rem 2rem !important;
-    font-size: 1.15rem !important;
-    font-weight: 600 !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(10px) !important;
+    color: #1e3a8a !important;
+    border: 2px solid rgba(255, 255, 255, 0.5) !important;
+    border-radius: 16px !important;
+    padding: 2.2rem 2rem !important;
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    position: relative !important;
-    overflow: visible !important;
-    letter-spacing: -0.02em !important;
-}
-
-/* Gradient accent bar on top of button */
-div.stButton > button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 3px;
-    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-    border-radius: 0 0 2px 2px;
-    opacity: 0;
-    transition: all 0.3s ease;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important; /* Space between textual icon and text */
 }
 
 div.stButton > button:hover {
+    background: #ffffff !important;
     border-color: #3b82f6 !important;
-    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15) !important;
-    transform: translateY(-2px);
-}
-
-div.stButton > button:hover::before {
-    opacity: 1;
-    width: 100px;
+    color: #2563eb !important;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), 0 4px 6px rgba(0,0,0,0.05) !important; /* Blue Glow */
 }
 
 div.stButton > button:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1) !important;
+    background: #f1f5f9 !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05) !important;
+    transform: scale(0.99) !important;
+}
+
+div.stButton > button p {
+    margin: 0 !important;
+}
+
+div.stButton > button p {
+    margin: 0 !important;
 }
 
 
