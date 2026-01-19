@@ -138,40 +138,48 @@ p {
 
 /* Premium Modern Buttons - STABLE & PROFESSIONAL */
 /* Premium Modern Buttons - ENHANCED & ICONIC */
+/* Premium Modern Buttons - COSMIC GRADIENT & GLOW */
 div.stButton > button {
     width: 100%;
-    background: rgba(255, 255, 255, 0.9) !important;
-    backdrop-filter: blur(10px) !important;
-    color: #1e3a8a !important;
-    border: 2px solid rgba(255, 255, 255, 0.5) !important;
-    border-radius: 16px !important;
-    padding: 2.2rem 2rem !important;
-    font-size: 1.25rem !important;
+    /* Vibrant Solid Gradient Background */
+    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%) !important;
+    background-size: 200% auto !important;
+    
+    /* No Border needed for solid buttons */
+    border: none !important;
+    border-radius: 24px !important;
+    
+    padding: 2.5rem 2rem !important;
+    
+    /* Typography */
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2) !important;
+    font-size: 1.3rem !important;
     font-weight: 700 !important;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    letter-spacing: 0.5px !important;
+    
+    /* Deep Colored Shadow */
+    box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4), 0 8px 10px -6px rgba(37, 99, 235, 0.1) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 12px !important; /* Space between textual icon and text */
+    gap: 12px !important;
 }
 
+/* Hover State - Gradient Shift & Glow */
 div.stButton > button:hover {
-    background: #ffffff !important;
-    border-color: #3b82f6 !important;
-    color: #2563eb !important;
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), 0 4px 6px rgba(0,0,0,0.05) !important; /* Blue Glow */
+    background-position: right center !important; /* Shifts gradient */
+    box-shadow: 0 20px 35px -5px rgba(124, 58, 237, 0.5), 0 10px 10px -5px rgba(124, 58, 237, 0.2) !important; /* Strong Purple/Blue Glow */
+    transform: translateY(-2px) !important;
+    color: #ffffff !important;
 }
 
 div.stButton > button:active {
-    background: #f1f5f9 !important;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05) !important;
-    transform: scale(0.99) !important;
-}
-
-div.stButton > button p {
-    margin: 0 !important;
+    transform: scale(0.98) !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2) !important;
 }
 
 div.stButton > button p {
@@ -634,6 +642,16 @@ def render_selection_screen():
     .sub-page-container {
         animation: fadeIn 0.4s ease-out forwards;
     }
+    .custom-caption {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+        color: #f1f5f9 !important; /* White text for dark background */
+        text-align: center !important;
+        font-size: 0.9rem !important;
+        margin-top: -10px !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+        opacity: 0.9;
+    }
     </style>
     """, unsafe_allow_html=True)
     
@@ -646,16 +664,20 @@ def render_selection_screen():
         col_space_l, col1, col2, col_space_r = st.columns([1, 2, 2, 1], gap="large")
         
         with col1:
-             if st.button(t("browse_open_data"), key="btn_open_data", use_container_width=True):
+             # Added Globe Icon directly to button text
+             if st.button(f"🌍  {t('browse_open_data')}", key="btn_open_data", use_container_width=True):
                 st.session_state.data_mode = 'open_data'
                 st.rerun()
-             st.caption(t("open_data_desc"))
+             # Updated caption to custom centered HTML
+             st.markdown(f'<p class="custom-caption">{t("open_data_desc")}</p>', unsafe_allow_html=True)
 
         with col2:
-             if st.button(t("upload_your_own"), key="btn_upload", use_container_width=True):
+             # Added Cloud Icon directly to button text
+             if st.button(f"☁️  {t('upload_your_own')}", key="btn_upload", use_container_width=True):
                 st.session_state.data_mode = 'upload'
                 st.rerun()
-             st.caption(t("upload_desc"))
+             # Updated caption to custom centered HTML
+             st.markdown(f'<p class="custom-caption">{t("upload_desc")}</p>', unsafe_allow_html=True)
         
         st.markdown('</div>', unsafe_allow_html=True)
 
