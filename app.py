@@ -1286,11 +1286,13 @@ def render_dashboard():
     
     # AI Analysis Section
     st.markdown(f"""
-        <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;
-                   border-left: 4px solid #8b5cf6; padding-left: 1rem;
-                   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;'>
-            <i class='fa-solid fa-brain' style='color: #8b5cf6;'></i> {t("ai_analysis")}
-        </h3>
+        <div style='margin-bottom: 1rem; text-align: center;'>
+            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem;
+                       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;'>
+                <i class='fa-solid fa-brain' style='color: #8b5cf6;'></i> {t("ai_analysis")}
+            </h3>
+            <div style='height: 3px; width: 80px; background: linear-gradient(90deg, #8b5cf6, #06b6d4); margin: 0 auto; border-radius: 2px;'></div>
+        </div>
     """, unsafe_allow_html=True)
     
     # Custom HTML Expander with FontAwesome icon

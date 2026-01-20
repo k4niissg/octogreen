@@ -63,13 +63,13 @@ def visualize(df, analysis):
     
     # Enhanced Summary Metrics with new additions
     st.markdown(f"""
-        <div style='margin-top: 2rem; margin-bottom: 1.5rem;'>
-            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; 
-                       border-left: 4px solid #0071e3; padding-left: 1rem;
+        <div style='margin-top: 2rem; margin-bottom: 1.5rem; text-align: center;'>
+            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem;
                        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;'>
                 <i class='fa-solid fa-chart-line' style='color: #0071e3;'></i> {t('performance_insights')}
             </h3>
-            <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>{t('key_metrics')}</p>
+            <div style='height: 3px; width: 80px; background: linear-gradient(90deg, #0071e3, #06b6d4); margin: 0 auto; border-radius: 2px;'></div>
+            <p style='color: #86868b; margin-top: 1rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>{t('key_metrics')}</p>
         </div>
     """, unsafe_allow_html=True)
     
@@ -297,13 +297,13 @@ def visualize(df, analysis):
     
     # ========== SAVINGS OPPORTUNITIES SECTION ==========
     st.markdown(f"""
-        <div style='margin-top: 3rem; margin-bottom: 1.5rem;'>
-            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; 
-                       border-left: 4px solid #10b981; padding-left: 1rem;
+        <div style='margin-top: 3rem; margin-bottom: 1.5rem; text-align: center;'>
+            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem;
                        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;'>
                 <i class='fa-solid fa-lightbulb' style='color: #10b981;'></i> {t('savings_opportunities')}
             </h3>
-            <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>{t('savings_opportunities_desc')}</p>
+            <div style='height: 3px; width: 80px; background: linear-gradient(90deg, #10b981, #06b6d4); margin: 0 auto; border-radius: 2px;'></div>
+            <p style='color: #86868b; margin-top: 1rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>{t('savings_opportunities_desc')}</p>
         </div>
     """, unsafe_allow_html=True)
     
@@ -468,12 +468,12 @@ def visualize(df, analysis):
     st.markdown("<br><br>", unsafe_allow_html=True)
 
     st.markdown(f"""
-        <div style='margin-top: 3rem; margin-bottom: 1rem;'>
-            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; 
-                       border-left: 4px solid #0071e3; padding-left: 1rem;'>
+        <div style='margin-top: 3rem; margin-bottom: 1rem; text-align: center;'>
+            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem;'>
                 <i class='fa-solid fa-chart-area' style='color: #0071e3;'></i> {t('consumption_timeline')}
             </h3>
-            <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>
+            <div style='height: 3px; width: 80px; background: linear-gradient(90deg, #0071e3, #06b6d4); margin: 0 auto; border-radius: 2px;'></div>
+            <p style='color: #86868b; margin-top: 1rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>
                 {t('realtime_usage')}
             </p>
         </div>
@@ -500,13 +500,13 @@ def visualize(df, analysis):
     with col_grid1:
         # Daily Aggregation
         st.markdown(f"""
-            <div style='margin-top: 1rem; margin-bottom: 1rem;'>
-                <h3 style='color: #1d1d1f; font-size: 1.3rem; font-weight: 600; 
-                           border-left: 4px solid #10b981; padding-left: 1rem;
+            <div style='margin-top: 1rem; margin-bottom: 1rem; text-align: center;'>
+                <h3 style='color: #1d1d1f; font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem;
                            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;'>
                     <i class='fa-solid fa-calendar-days' style='color: #10b981;'></i> {t('daily_energy_profile')}
                 </h3>
-                <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>
+                <div style='height: 3px; width: 60px; background: linear-gradient(90deg, #10b981, #06b6d4); margin: 0 auto; border-radius: 2px;'></div>
+                <p style='color: #86868b; margin-top: 1rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>
                     {t('total_consumption_day')}
                 </p>
             </div>
@@ -534,13 +534,13 @@ def visualize(df, analysis):
     with col_grid2:
         # Hourly Pattern Analysis
         st.markdown(f"""
-            <div style='margin-top: 1rem; margin-bottom: 1rem;'>
-                <h3 style='color: #1d1d1f; font-size: 1.3rem; font-weight: 600; 
-                           border-left: 4px solid #3b82f6; padding-left: 1rem;
+            <div style='margin-top: 1rem; margin-bottom: 1rem; text-align: center;'>
+                <h3 style='color: #1d1d1f; font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem;
                            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;'>
                     <i class='fa-solid fa-clock' style='color: #3b82f6;'></i> {t('hourly_usage_patterns')}
                 </h3>
-                <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>
+                <div style='height: 3px; width: 60px; background: linear-gradient(90deg, #3b82f6, #06b6d4); margin: 0 auto; border-radius: 2px;'></div>
+                <p style='color: #86868b; margin-top: 1rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>
                     {t('average_by_hour')}
                 </p>
             </div>
@@ -567,12 +567,12 @@ def visualize(df, analysis):
 
     # NEW DEVICE COMPARISON CHART
     st.markdown(f"""
-        <div style='margin-top: 3rem; margin-bottom: 1rem;'>
-            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; 
-                       border-left: 4px solid #8b5cf6; padding-left: 1rem;'>
+        <div style='margin-top: 3rem; margin-bottom: 1rem; text-align: center;'>
+            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem;'>
                 <i class='fa-solid fa-chart-column' style='color: #8b5cf6;'></i> {t('device_comparison')}
             </h3>
-            <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>
+            <div style='height: 3px; width: 80px; background: linear-gradient(90deg, #8b5cf6, #06b6d4); margin: 0 auto; border-radius: 2px;'></div>
+            <p style='color: #86868b; margin-top: 1rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>
                 {t('compare_device_performance')}
             </p>
         </div>
@@ -589,11 +589,11 @@ def visualize(df, analysis):
         with col_dev1:
             # Total consumption by device (Donut Chart)
             st.markdown(f"""
-                <div style='margin-bottom: 1rem;'>
-                    <h4 style='color: #1d1d1f; font-size: 1.1rem; font-weight: 600; 
-                               border-left: 3px solid #f59e0b; padding-left: 0.75rem;'>
+                <div style='margin-bottom: 1rem; text-align: center;'>
+                    <h4 style='color: #1d1d1f; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;'>
                         <i class='fa-solid fa-chart-pie' style='color: #f59e0b;'></i> {t('total_consumption_share')}
                     </h4>
+                    <div style='height: 2px; width: 40px; background: linear-gradient(90deg, #f59e0b, #06b6d4); margin: 0 auto; border-radius: 2px;'></div>
                 </div>
             """, unsafe_allow_html=True)
             
@@ -627,11 +627,11 @@ def visualize(df, analysis):
         with col_dev2:
             # Average consumption comparison (Horizontal Bar)
             st.markdown(f"""
-                <div style='margin-bottom: 1rem;'>
-                    <h4 style='color: #1d1d1f; font-size: 1.1rem; font-weight: 600; 
-                               border-left: 3px solid #06b6d4; padding-left: 0.75rem;'>
+                <div style='margin-bottom: 1rem; text-align: center;'>
+                    <h4 style='color: #1d1d1f; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;'>
                         <i class='fa-solid fa-chart-bar' style='color: #06b6d4;'></i> {t('average_consumption_comparison')}
                     </h4>
+                    <div style='height: 2px; width: 40px; background: linear-gradient(90deg, #06b6d4, #10b981); margin: 0 auto; border-radius: 2px;'></div>
                 </div>
             """, unsafe_allow_html=True)
             
@@ -656,11 +656,11 @@ def visualize(df, analysis):
         
         # Device Performance Table
         st.markdown(f"""
-            <div style='margin-top: 2rem; margin-bottom: 1rem;'>
-                <h4 style='color: #1d1d1f; font-size: 1.2rem; font-weight: 600; 
-                           border-left: 3px solid #ef4444; padding-left: 0.75rem;'>
+            <div style='margin-top: 2rem; margin-bottom: 1rem; text-align: center;'>
+                <h4 style='color: #1d1d1f; font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;'>
                     <i class='fa-solid fa-table' style='color: #ef4444;'></i> {t('device_performance_summary')}
                 </h4>
+                <div style='height: 2px; width: 50px; background: linear-gradient(90deg, #ef4444, #06b6d4); margin: 0 auto; border-radius: 2px;'></div>
             </div>
         """, unsafe_allow_html=True)
         
@@ -695,12 +695,12 @@ def visualize(df, analysis):
     
     # Anomaly Detection
     st.markdown(f"""
-        <div style='margin-top: 3rem; margin-bottom: 1rem;'>
-            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; 
-                       border-left: 4px solid #ef4444; padding-left: 1rem;'>
+        <div style='margin-top: 3rem; margin-bottom: 1rem; text-align: center;'>
+            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem;'>
                 <i class='fa-solid fa-magnifying-glass-chart' style='color: #ef4444;'></i> {t('anomaly_detection')}
             </h3>
-            <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>
+            <div style='height: 3px; width: 80px; background: linear-gradient(90deg, #ef4444, #06b6d4); margin: 0 auto; border-radius: 2px;'></div>
+            <p style='color: #86868b; margin-top: 1rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>
                 {t('unusual_patterns')}
             </p>
         </div>
