@@ -564,6 +564,134 @@ def visualize(df, analysis):
             opacity=0.8
         )
         st.plotly_chart(fig3, use_container_width=True)
+
+    # NEW DEVICE COMPARISON CHART
+    st.markdown(f"""
+        <div style='margin-top: 3rem; margin-bottom: 1rem;'>
+            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; 
+                       border-left: 4px solid #8b5cf6; padding-left: 1rem;'>
+                <i class='fa-solid fa-chart-column' style='color: #8b5cf6;'></i> {t('device_comparison')}
+            </h3>
+            <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;'>
+                {t('compare_device_performance')}
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    # Create device comparison data
+    if 'device_id' in df.columns:
+        device_stats = df.groupby('device_id')['consumption_kWh'].agg(['sum', 'mean', 'max', 'count']).reset_index()
+        device_stats.columns = ['Device', 'Total_kWh', 'Average_kWh', 'Peak_kWh', 'Records']
+        
+        # Create 2-column layout for device comparison charts
+        col_dev1, col_dev2 = st.columns(2, gap="medium")
+        
+        with col_dev1:
+            # Total consumption by device (Donut Chart)
+            st.markdown(f"""
+                <div style='margin-bottom: 1rem;'>
+                    <h4 style='color: #1d1d1f; font-size: 1.1rem; font-weight: 600; 
+                               border-left: 3px solid #f59e0b; padding-left: 0.75rem;'>
+                        <i class='fa-solid fa-chart-pie' style='color: #f59e0b;'></i> {t('total_consumption_share')}
+                    </h4>
+                </div>
+            """, unsafe_allow_html=True)
+            
+            fig_donut = px.pie(device_stats, values='Total_kWh', names='Device', hole=0.4)
+            fig_donut.update_layout(
+                **common_layout,
+                height=350,
+                margin=dict(t=20, b=20, l=20, r=20),
+                showlegend=True,
+                legend=dict(
+                    orientation="v",
+                    yanchor="middle",
+                    y=0.5,
+                    xanchor="left",
+                    x=1.05,
+                    bgcolor='white',
+                    bordercolor=grid_color,
+                    borderwidth=1
+                )
+            )
+            fig_donut.update_traces(
+                textposition='inside', 
+                textinfo='percent+label',
+                marker=dict(
+                    colors=['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'],
+                    line=dict(color='white', width=2)
+                )
+            )
+            st.plotly_chart(fig_donut, use_container_width=True)
+            
+        with col_dev2:
+            # Average consumption comparison (Horizontal Bar)
+            st.markdown(f"""
+                <div style='margin-bottom: 1rem;'>
+                    <h4 style='color: #1d1d1f; font-size: 1.1rem; font-weight: 600; 
+                               border-left: 3px solid #06b6d4; padding-left: 0.75rem;'>
+                        <i class='fa-solid fa-chart-bar' style='color: #06b6d4;'></i> {t('average_consumption_comparison')}
+                    </h4>
+                </div>
+            """, unsafe_allow_html=True)
+            
+            # Sort devices by average consumption for better visualization
+            device_stats_sorted = device_stats.sort_values('Average_kWh', ascending=True)
+            
+            fig_bar = px.bar(device_stats_sorted, x='Average_kWh', y='Device', orientation='h',
+                           labels={'Average_kWh': t('average_kwh'), 'Device': t('device')})
+            fig_bar.update_layout(
+                **common_layout,
+                height=350,
+                margin=dict(t=20, b=20, l=20, r=20),
+                showlegend=False
+            )
+            fig_bar.update_traces(
+                marker_color='#06b6d4',
+                marker_line_color='#0891b2',
+                marker_line_width=1.5,
+                opacity=0.8
+            )
+            st.plotly_chart(fig_bar, use_container_width=True)
+        
+        # Device Performance Table
+        st.markdown(f"""
+            <div style='margin-top: 2rem; margin-bottom: 1rem;'>
+                <h4 style='color: #1d1d1f; font-size: 1.2rem; font-weight: 600; 
+                           border-left: 3px solid #ef4444; padding-left: 0.75rem;'>
+                    <i class='fa-solid fa-table' style='color: #ef4444;'></i> {t('device_performance_summary')}
+                </h4>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        # Format the device stats table for better display
+        device_display = device_stats.copy()
+        device_display['Total_kWh'] = device_display['Total_kWh'].round(2)
+        device_display['Average_kWh'] = device_display['Average_kWh'].round(3)
+        device_display['Peak_kWh'] = device_display['Peak_kWh'].round(3)
+        
+        # Rename columns for display
+        device_display.columns = [t('device'), t('total_kwh'), t('average_kwh'), t('peak_kwh'), t('data_points')]
+        
+        # Style the dataframe
+        st.dataframe(
+            device_display.style.format({
+                t('total_kwh'): '{:.2f}',
+                t('average_kwh'): '{:.3f}',
+                t('peak_kwh'): '{:.3f}',
+                t('data_points'): '{:,}'
+            }).set_properties(**{
+                'background-color': '#ffffff',
+                'color': '#1f2937',
+                'border-color': '#e5e7eb'
+            }).set_table_styles([
+                {'selector': 'th', 'props': [('background-color', '#f9fafb'), ('color', '#1f2937'), ('font-weight', '600')]},
+                {'selector': 'td', 'props': [('color', '#1f2937')]}
+            ]),
+            use_container_width=True
+        )
+    else:
+        st.info(t("no_device_data_available"))
     
     # Anomaly Detection
     st.markdown(f"""

@@ -136,32 +136,41 @@ p {
 
 
 
-/* Premium Modern Buttons - STABLE & PROFESSIONAL */
-/* Premium Modern Buttons - ENHANCED & ICONIC */
-/* Premium Modern Buttons - COSMIC GRADIENT & GLOW */
+/* ULTRA PREMIUM BUTTON DESIGN - GLASSMORPHISM & NEON */
 div.stButton > button {
     width: 100%;
-    /* Vibrant Solid Gradient Background */
-    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%) !important;
-    background-size: 200% auto !important;
+    position: relative !important;
+    overflow: hidden !important;
     
-    /* No Border needed for solid buttons */
-    border: none !important;
-    border-radius: 24px !important;
+    /* Glassmorphism Base */
+    background: rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
     
-    padding: 2.5rem 2rem !important;
+    /* Premium Border with Gradient */
+    border: 2px solid transparent !important;
+    background-clip: padding-box !important;
+    border-radius: 20px !important;
     
-    /* Typography */
-    color: #ffffff !important;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.2) !important;
-    font-size: 1.3rem !important;
-    font-weight: 700 !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-    letter-spacing: 0.5px !important;
+    padding: 2rem 2.5rem !important;
     
-    /* Deep Colored Shadow */
-    box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4), 0 8px 10px -6px rgba(37, 99, 235, 0.1) !important;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    /* Typography - Ultra Clean */
+    color: #1e293b !important;
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Pro Display', sans-serif !important;
+    letter-spacing: -0.02em !important;
+    text-shadow: none !important;
+    
+    /* Subtle Premium Shadow */
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.12),
+        0 2px 8px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+    
+    /* NO TRANSFORM - STABLE BUTTON */
+    transform: none !important;
+    transition: background 0.3s ease, box-shadow 0.3s ease, color 0.3s ease !important;
     
     display: flex !important;
     align-items: center !important;
@@ -169,21 +178,58 @@ div.stButton > button {
     gap: 12px !important;
 }
 
-/* Hover State - Gradient Shift & Glow */
+/* Gradient Border Effect */
+div.stButton > button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 20px;
+    padding: 2px;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4, #10b981);
+    background-size: 300% 300%;
+    animation: gradientShift 4s ease infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: exclude;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    z-index: -1;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Hover State - NO MOVEMENT, ONLY COLORS */
 div.stButton > button:hover {
-    background-position: right center !important; /* Shifts gradient */
-    box-shadow: 0 20px 35px -5px rgba(124, 58, 237, 0.5), 0 10px 10px -5px rgba(124, 58, 237, 0.2) !important; /* Strong Purple/Blue Glow */
-    transform: translateY(-2px) !important;
-    color: #ffffff !important;
+    transform: none !important;
+    background: rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.15),
+        0 8px 16px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6),
+        0 0 0 1px rgba(59, 130, 246, 0.3) !important;
+    color: #0f172a !important;
 }
 
+/* Active State - NO MOVEMENT, ONLY COLORS */
 div.stButton > button:active {
-    transform: scale(0.98) !important;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2) !important;
+    transform: none !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 
+        0 12px 24px rgba(0, 0, 0, 0.12),
+        0 4px 8px rgba(0, 0, 0, 0.08),
+        inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
 }
 
+/* Button Text Styling */
 div.stButton > button p {
     margin: 0 !important;
+    font-weight: 600 !important;
+    transform: none !important;
 }
 
 
@@ -329,20 +375,30 @@ div[data-baseweb="option"][aria-selected="true"] {
     padding: 0.5rem 0.75rem !important;
 }
 
-/* Expander - Premium Button Style */
+/* Expander - Stable Premium Glassmorphism Style */
 .streamlit-expanderHeader,
 [data-testid="stExpander"] > div:first-child,
 [data-testid="stExpander"] summary,
 [data-testid="stExpander"] [data-testid="stExpanderToggleIcon"] {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 14px !important;
+    /* Glassmorphism Background */
+    background: rgba(59, 130, 246, 0.1) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    
+    color: #1e40af !important;
+    border: 1px solid rgba(59, 130, 246, 0.2) !important;
+    border-radius: 16px !important;
     font-weight: 600 !important;
     font-size: 1rem !important;
-    padding: 1rem 1.25rem !important;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.25) !important;
-    transition: all 0.3s ease !important;
+    padding: 1.2rem 1.5rem !important;
+    
+    box-shadow: 
+        0 4px 16px rgba(59, 130, 246, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+    
+    /* NO TRANSFORM - STABLE */
+    transform: none !important;
+    transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
@@ -354,21 +410,26 @@ div[data-baseweb="option"][aria-selected="true"] {
 }
 
 [data-testid="stExpander"] summary:hover {
-    box-shadow: 0 6px 25px rgba(59, 130, 246, 0.35) !important;
+    transform: none !important;
+    background: rgba(59, 130, 246, 0.15) !important;
+    box-shadow: 
+        0 6px 20px rgba(59, 130, 246, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
 }
 
 [data-testid="stExpander"] summary span,
 [data-testid="stExpander"] summary p,
 .streamlit-expanderHeader span,
 .streamlit-expanderHeader p {
-    color: white !important;
+    color: #1e40af !important;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
 [data-testid="stExpander"] svg,
 .streamlit-expanderHeader svg {
-    fill: white !important;
-    color: white !important;
+    fill: #3b82f6 !important;
+    color: #3b82f6 !important;
 }
 
 /* Hide material icon text artifacts */
@@ -665,7 +726,7 @@ def render_selection_screen():
         
         with col1:
              # Added Globe Icon directly to button text
-             if st.button(f"🌍  {t('browse_open_data')}", key="btn_open_data", use_container_width=True):
+             if st.button(f"🌍  {t('browse_open_data')}", key="btn_open_data", width="stretch"):
                 st.session_state.data_mode = 'open_data'
                 st.rerun()
              # Updated caption to custom centered HTML
@@ -673,7 +734,7 @@ def render_selection_screen():
 
         with col2:
              # Added Cloud Icon directly to button text
-             if st.button(f"☁️  {t('upload_your_own')}", key="btn_upload", use_container_width=True):
+             if st.button(f"☁️  {t('upload_your_own')}", key="btn_upload", width="stretch"):
                 st.session_state.data_mode = 'upload'
                 st.rerun()
              # Updated caption to custom centered HTML
@@ -701,14 +762,14 @@ def render_selection_screen():
         
         with col_opts:
             source = st.selectbox(t("choose_source"), [
-                "UCI Household (2M+ records)",
+                "UK National Grid - Carbon Intensity (~96 records)",
+                "WRI - Global Power Plants (~96 records)",
+                "World Bank - Energy & Carbon (~500 records)",
+                "Eurostat - EU Energy (~1K records)",
+                "US EIA - Electricity Stats (~1K records)",
+                "IEA - Global Energy Data (~5K records)",
                 "EPIAS Turkey (Real-time)",
-                "World Bank - Energy & Carbon",
-                "IEA - Global Energy Data",
-                "US EIA - Electricity Stats",
-                "Eurostat - EU Energy",
-                "UK National Grid - Carbon Intensity",
-                "WRI - Global Power Plants"
+                "UCI Household (2M+ records)"
             ], index=0)
             
 
@@ -716,77 +777,7 @@ def render_selection_screen():
             st.markdown("<br>", unsafe_allow_html=True)
             
             # Action Area
-            if "UCI Household" in source:
-                if st.button(t("download_analyze"), key="dl_uci", width="stretch"):
-                    with st.status(t("processing_data"), expanded=True) as status:
-                        st.write(t("connecting"))
-                        time.sleep(0.5)
-                        st.write(t("downloading"))
-                        st.session_state.df = open_data.fetch_kaggle_household()
-                        st.write(t("running_analysis"))
-                        time.sleep(0.5)
-                        status.update(label=t("ready"), state="complete", expanded=False)
-                    st.rerun()
-
-            elif "EPIAS Turkey" in source:
-                c1, c2 = st.columns(2)
-                with c1:
-                    start = st.date_input(t("start_date"), datetime.now() - timedelta(days=7))
-                with c2:
-                    end = st.date_input(t("end_date"), datetime.now())
-                
-                if st.button(t("fetch_live_data"), key="dl_epias", width="stretch"):
-                    with st.spinner(t("fetching_live")):
-                        df = open_data.fetch_epias_data(start, end)
-                        if df is not None:
-                            st.session_state.df = df
-                            st.rerun()
-                        else:
-                            st.error(t("failed_epias"))
-            
-            elif "World Bank" in source:
-                 if st.button(t("fetch_world_bank"), key="dl_wb", width="stretch"):
-                    with st.spinner(t("accessing_wb")):
-                        energy_df = open_data.fetch_world_bank_energy()
-                        if energy_df is not None:
-                            df = energy_df.copy()
-                            df["timestamp"] = pd.to_datetime(df["year"], format="%Y")
-                            df["device_id"] = df["country"]
-                            df["consumption_kWh"] = df["consumption_kwh_per_capita"]
-                            st.session_state.df = df[["timestamp", "device_id", "consumption_kWh"]].dropna()
-                            st.rerun()
-            
-            elif "IEA" in source:
-                if st.button(t("fetch_iea"), key="dl_iea", width="stretch"):
-                    with st.spinner(t("accessing_iea")):
-                        df = open_data.fetch_iea_global_energy()
-                        if df is not None:
-                            st.session_state.df = df
-                            st.rerun()
-                        else:
-                            st.error(t("failed_iea"))
-            
-            elif "US EIA" in source:
-                if st.button(t("fetch_us_data"), key="dl_eia", width="stretch"):
-                    with st.spinner(t("accessing_eia")):
-                        df = open_data.fetch_us_eia_electricity()
-                        if df is not None:
-                            st.session_state.df = df
-                            st.rerun()
-                        else:
-                            st.error(t("failed_eia"))
-            
-            elif "Eurostat" in source:
-                if st.button(t("fetch_eu_data"), key="dl_eurostat", width="stretch"):
-                    with st.spinner(t("accessing_eurostat")):
-                        df = open_data.fetch_eurostat_energy()
-                        if df is not None:
-                            st.session_state.df = df
-                            st.rerun()
-                        else:
-                            st.error(t("failed_eurostat"))
-                            
-            elif "UK National Grid" in source:
+            if "UK National Grid" in source:
                 if st.button(t("fetch_uk_carbon"), key="dl_uk", width="stretch"):
                     with st.spinner("Fetching UK Carbon Data..."):
                        df = open_data.fetch_uk_carbon_intensity()
@@ -805,17 +796,171 @@ def render_selection_screen():
                             st.rerun()
                         else:
                             st.error("Failed to fetch Power Plant data")
+                            
+            elif "World Bank" in source:
+                 if st.button(t("fetch_world_bank"), key="dl_wb", width="stretch"):
+                    with st.spinner(t("accessing_wb")):
+                        energy_df = open_data.fetch_world_bank_energy()
+                        if energy_df is not None:
+                            df = energy_df.copy()
+                            df["timestamp"] = pd.to_datetime(df["year"], format="%Y")
+                            df["device_id"] = df["country"]
+                            df["consumption_kWh"] = df["consumption_kwh_per_capita"]
+                            st.session_state.df = df[["timestamp", "device_id", "consumption_kWh"]].dropna()
+                            st.rerun()
+                            
+            elif "Eurostat" in source:
+                if st.button(t("fetch_eu_data"), key="dl_eurostat", width="stretch"):
+                    with st.spinner(t("accessing_eurostat")):
+                        df = open_data.fetch_eurostat_energy()
+                        if df is not None:
+                            st.session_state.df = df
+                            st.rerun()
+                        else:
+                            st.error(t("failed_eurostat"))
+            
+            elif "US EIA" in source:
+                if st.button(t("fetch_us_data"), key="dl_eia", width="stretch"):
+                    with st.spinner(t("accessing_eia")):
+                        df = open_data.fetch_us_eia_electricity()
+                        if df is not None:
+                            st.session_state.df = df
+                            st.rerun()
+                        else:
+                            st.error(t("failed_eia"))
+            
+            elif "IEA" in source:
+                if st.button(t("fetch_iea"), key="dl_iea", width="stretch"):
+                    with st.spinner(t("accessing_iea")):
+                        df = open_data.fetch_iea_global_energy()
+                        if df is not None:
+                            st.session_state.df = df
+                            st.rerun()
+                        else:
+                            st.error(t("failed_iea"))
+
+            elif "EPIAS Turkey" in source:
+                c1, c2 = st.columns(2)
+                with c1:
+                    start = st.date_input(t("start_date"), datetime.now() - timedelta(days=7))
+                with c2:
+                    end = st.date_input(t("end_date"), datetime.now())
+                
+                if st.button(t("fetch_live_data"), key="dl_epias", width="stretch"):
+                    with st.spinner(t("fetching_live")):
+                        df = open_data.fetch_epias_data(start, end)
+                        if df is not None:
+                            st.session_state.df = df
+                            st.rerun()
+                        else:
+                            st.error(t("failed_epias"))
+
+            elif "UCI Household" in source:
+                if st.button(t("download_analyze"), key="dl_uci", width="stretch"):
+                    with st.status(t("processing_data"), expanded=True) as status:
+                        st.write(t("connecting"))
+                        time.sleep(0.5)
+                        st.write(t("downloading"))
+                        st.session_state.df = open_data.fetch_kaggle_household()
+                        st.write(t("running_analysis"))
+                        time.sleep(0.5)
+                        status.update(label=t("ready"), state="complete", expanded=False)
+                    st.rerun()
 
         with col_detais:
-            if "UCI Household" in source:
+            if "Manual Data" in source:
                 st.markdown(f"""
                 <div class="info-card">
-                    <h4>{t('dataset_snapshot')}</h4>
-                    <div class="metric-value">2M+</div>
-                    <p>{t('individual_records')}</p>
+                    <h4>Manual Entry</h4>
+                    <div class="metric-value">~168</div>
+                    <p>Estimated records</p>
                     <div style="margin-top:1rem; border-top:2px solid rgba(59, 130, 246, 0.2); padding-top:1rem;">
-                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('contains')}</strong><br>{t('uci_contains')}</p>
-                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('best_for')}</strong><br>{t('uci_best')}</p>
+                        <p style="font-size:0.9rem; color:#64748b;"><strong>Contains</strong><br>Monthly bill estimates, device-based calculations</p>
+                        <p style="font-size:0.9rem; color:#64748b;"><strong>Best for</strong><br>Quick prototyping, small-scale analysis</p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            elif "Test Data CSV" in source:
+                st.markdown(f"""
+                <div class="info-card">
+                    <h4>Test Dataset</h4>
+                    <div class="metric-value">8</div>
+                    <p>Sample records</p>
+                    <div style="margin-top:1rem; border-top:2px solid rgba(59, 130, 246, 0.2); padding-top:1rem;">
+                        <p style="font-size:0.9rem; color:#64748b;"><strong>Contains</strong><br>Sample IoT device data for testing</p>
+                        <p style="font-size:0.9rem; color:#64748b;"><strong>Best for</strong><br>Testing app functionality, demos</p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            elif "UK National Grid" in source:
+                st.markdown(f"""
+                <div class="info-card">
+                    <h4>UK Carbon Grid</h4>
+                    <div class="metric-value">~96</div>
+                    <p>Hourly records</p>
+                    <div style="margin-top:1rem; border-top:2px solid rgba(59, 130, 246, 0.2); padding-top:1rem;">
+                        <p style="font-size:0.9rem; color:#64748b;"><strong>Contains</strong><br>Real-time carbon intensity data (gCO2/kWh)</p>
+                        <p style="font-size:0.9rem; color:#64748b;"><strong>Best for</strong><br>Carbon footprint analysis, grid monitoring</p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            elif "WRI" in source:
+                st.markdown(f"""
+                <div class="info-card">
+                    <h4>Global Power Plants</h4>
+                    <div class="metric-value">~96</div>
+                    <p>Plant records</p>
+                    <div style="margin-top:1rem; border-top:2px solid rgba(59, 130, 246, 0.2); padding-top:1rem;">
+                        <p style="font-size:0.9rem; color:#64748b;"><strong>Contains</strong><br>Solar & wind power generation by country</p>
+                        <p style="font-size:0.9rem; color:#64748b;"><strong>Best for</strong><br>Renewable energy analysis, country comparisons</p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            elif "World Bank" in source:
+                 st.markdown(f"""
+                <div class="info-card">
+                    <h4>{t('global_indicators')}</h4>
+                    <div class="metric-value">~500</div>
+                    <p>{t('countries_regions')}</p>
+                    <div style="margin-top:1rem; border-top:2px solid rgba(59, 130, 246, 0.2); padding-top:1rem;">
+                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('contains')}</strong><br>{t('wb_contains')}</p>
+                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('best_for')}</strong><br>{t('wb_best')}</p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            elif "Eurostat" in source:
+                st.markdown(f"""
+                <div class="info-card">
+                    <h4>{t('eu_stats')}</h4>
+                    <div class="metric-value">~1K</div>
+                    <p>EU records</p>
+                    <div style="margin-top:1rem; border-top:2px solid rgba(59, 130, 246, 0.2); padding-top:1rem;">
+                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('contains')}</strong><br>{t('eurostat_contains')}</p>
+                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('best_for')}</strong><br>{t('eurostat_best')}</p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            elif "US EIA" in source:
+                st.markdown(f"""
+                <div class="info-card">
+                    <h4>{t('us_energy_authority')}</h4>
+                    <div class="metric-value">~1K</div>
+                    <p>{t('production_records')}</p>
+                    <div style="margin-top:1rem; border-top:2px solid rgba(59, 130, 246, 0.2); padding-top:1rem;">
+                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('contains')}</strong><br>{t('eia_contains')}</p>
+                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('best_for')}</strong><br>{t('eia_best')}</p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            elif "IEA" in source:
+                st.markdown(f"""
+                <div class="info-card">
+                    <h4>{t('iea_database')}</h4>
+                    <div class="metric-value">~5K</div>
+                    <p>{t('global_records')}</p>
+                    <div style="margin-top:1rem; border-top:2px solid rgba(59, 130, 246, 0.2); padding-top:1rem;">
+                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('contains')}</strong><br>{t('iea_contains')}</p>
+                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('best_for')}</strong><br>{t('iea_best')}</p>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
@@ -831,51 +976,15 @@ def render_selection_screen():
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
-            elif "World Bank" in source:
-                 st.markdown(f"""
-                <div class="info-card">
-                    <h4>{t('global_indicators')}</h4>
-                    <div class="metric-value">190+</div>
-                    <p>{t('countries_regions')}</p>
-                    <div style="margin-top:1rem; border-top:2px solid rgba(59, 130, 246, 0.2); padding-top:1rem;">
-                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('contains')}</strong><br>{t('wb_contains')}</p>
-                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('best_for')}</strong><br>{t('wb_best')}</p>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-            elif "IEA" in source:
+            elif "UCI Household" in source:
                 st.markdown(f"""
                 <div class="info-card">
-                    <h4>{t('iea_database')}</h4>
-                    <div class="metric-value">5000+</div>
-                    <p>{t('global_records')}</p>
+                    <h4>{t('dataset_snapshot')}</h4>
+                    <div class="metric-value">2M+</div>
+                    <p>{t('individual_records')}</p>
                     <div style="margin-top:1rem; border-top:2px solid rgba(59, 130, 246, 0.2); padding-top:1rem;">
-                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('contains')}</strong><br>{t('iea_contains')}</p>
-                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('best_for')}</strong><br>{t('iea_best')}</p>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-            elif "US EIA" in source:
-                st.markdown(f"""
-                <div class="info-card">
-                    <h4>{t('us_energy_authority')}</h4>
-                    <div class="metric-value">1000+</div>
-                    <p>{t('production_records')}</p>
-                    <div style="margin-top:1rem; border-top:2px solid rgba(59, 130, 246, 0.2); padding-top:1rem;">
-                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('contains')}</strong><br>{t('eia_contains')}</p>
-                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('best_for')}</strong><br>{t('eia_best')}</p>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-            elif "Eurostat" in source:
-                st.markdown(f"""
-                <div class="info-card">
-                    <h4>{t('eu_stats')}</h4>
-                    <div class="metric-value">27</div>
-                    <p>{t('eu_members')}</p>
-                    <div style="margin-top:1rem; border-top:2px solid rgba(59, 130, 246, 0.2); padding-top:1rem;">
-                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('contains')}</strong><br>{t('eurostat_contains')}</p>
-                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('best_for')}</strong><br>{t('eurostat_best')}</p>
+                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('contains')}</strong><br>{t('uci_contains')}</p>
+                        <p style="font-size:0.9rem; color:#64748b;"><strong>{t('best_for')}</strong><br>{t('uci_best')}</p>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
@@ -896,7 +1005,7 @@ def render_selection_screen():
              
         st.markdown("<hr style='margin-top:0.5rem; margin-bottom:2rem; opacity:0.3;'>", unsafe_allow_html=True)
         
-        uploaded = st.file_uploader("", type=["csv"])
+        uploaded = st.file_uploader("Upload CSV", type=["csv"], label_visibility="collapsed")
         
         if uploaded:
             st.session_state.df = pd.read_csv(uploaded)
@@ -933,21 +1042,53 @@ def render_dashboard():
             background-color: #ffffff !important;
         }
         
-        /* GENERAL BUTTON STYLING */
+        /* GENERAL BUTTON STYLING - STABLE MINI BUTTONS */
         div[data-testid="column"] button {
             height: 40px !important;
             min-height: 40px !important;
             max-height: 40px !important;
             padding: 0px 16px !important;
             font-size: 0.9rem !important;
-            border-radius: 8px !important;
-            border-color: #e2e8f0 !important;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
+            border-radius: 12px !important;
+            
+            /* Mini Glassmorphism */
+            background: rgba(255, 255, 255, 0.2) !important;
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            
+            box-shadow: 
+                0 4px 16px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+            
+            color: #1e293b !important;
+            font-weight: 500 !important;
+            
             white-space: nowrap !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
             width: 100% !important;
+            
+            /* NO TRANSFORM - STABLE */
+            transform: none !important;
+            transition: background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
+        }
+
+        /* Mini Button Hover - NO MOVEMENT */
+        div[data-testid="column"] button:hover {
+            transform: none !important;
+            background: rgba(255, 255, 255, 0.3) !important;
+            box-shadow: 
+                0 6px 20px rgba(0, 0, 0, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+            border-color: rgba(59, 130, 246, 0.4) !important;
+        }
+
+        /* Mini Button Active - NO MOVEMENT */
+        div[data-testid="column"] button:active {
+            transform: none !important;
+            background: rgba(255, 255, 255, 0.25) !important;
         }
 
         /* RESET CONTENT STYLES INSIDE BUTTON */
@@ -974,6 +1115,27 @@ def render_dashboard():
         
         div.stDownloadButton button {
             font-weight: 500 !important;
+            /* Download Button - Stable Accent Glassmorphism */
+            background: rgba(59, 130, 246, 0.15) !important;
+            backdrop-filter: blur(15px) !important;
+            -webkit-backdrop-filter: blur(15px) !important;
+            border: 1px solid rgba(59, 130, 246, 0.3) !important;
+            border-radius: 12px !important;
+            color: #1e40af !important;
+            box-shadow: 
+                0 4px 16px rgba(59, 130, 246, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+            /* NO TRANSFORM */
+            transform: none !important;
+            transition: background 0.2s ease, box-shadow 0.2s ease !important;
+        }
+        
+        div.stDownloadButton button:hover {
+            transform: none !important;
+            background: rgba(59, 130, 246, 0.25) !important;
+            box-shadow: 
+                0 6px 20px rgba(59, 130, 246, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
         }
         
         /* Logo Alignment */
