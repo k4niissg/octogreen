@@ -201,6 +201,35 @@ div.stButton > button div {
     color: #ffffff !important; /* Force white text */
 }
 
+/* Explicit Download Button Styling - Match Primary Button */
+div.stDownloadButton > button {
+    width: 100%;
+    position: relative !important;
+    overflow: hidden !important;
+    background: #0071e3 !important; /* Apple's blue */
+    border: none !important;
+    border-radius: 980px !important; /* Apple's pill shape */
+    padding: 1rem 2rem !important;
+    color: #ffffff !important;
+    font-size: 1.0625rem !important;
+    font-weight: 400 !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
+    box-shadow: 0 4px 14px rgba(0, 113, 227, 0.39) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+div.stDownloadButton > button:hover {
+    background: #0077ed !important;
+    color: #ffffff !important;
+}
+
+div.stDownloadButton > button p,
+div.stDownloadButton > button span {
+    color: #ffffff !important;
+}
+
 
 /* Apple-Style Cards */
 .info-card {
@@ -904,59 +933,76 @@ button div,
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
-/* FINAL OVERRIDE - HIGHEST SPECIFICITY FOR DROPDOWN TEXT */
-html body .stApp .stSelectbox [data-baseweb="popover"] [role="option"],
-html body .stApp .stSelectbox [data-baseweb="popover"] [role="option"] *,
-html body .stApp [data-baseweb="popover"] [role="option"],
-html body .stApp [data-baseweb="popover"] [role="option"] *,
-html body .stApp [role="listbox"] [role="option"],
-html body .stApp [role="listbox"] [role="option"] * {
-    color: #1d1d1f !important; /* ULTIMATE OVERRIDE FOR DROPDOWN TEXT */
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
-}
-
-/* FINAL OVERRIDE FOR HOVER STATES */
-html body .stApp [role="option"]:hover,
-html body .stApp [role="option"]:hover *,
-html body .stApp [role="option"][aria-selected="true"],
-html body .stApp [role="option"][aria-selected="true"] * {
-    color: #1d1d1f !important; /* ULTIMATE OVERRIDE FOR HOVER/SELECTED TEXT */
-    background-color: #f5f5f7 !important;
-}
-
-/* ULTIMATE OVERRIDE FOR SELECTED VALUE DISPLAY */
-html body .stApp div[data-baseweb="select"] > div:first-child,
-html body .stApp div[data-baseweb="select"] > div:first-child *,
-html body .stApp div[data-baseweb="select"] [role="button"],
-html body .stApp div[data-baseweb="select"] [role="button"] *,
-html body .stApp .stSelectbox div[data-baseweb="select"] > div,
-html body .stApp .stSelectbox div[data-baseweb="select"] > div *,
-html body .stApp .stSelectbox [role="button"],
-html body .stApp .stSelectbox [role="button"] * {
-    color: #1d1d1f !important; /* FORCE DARK TEXT FOR SELECTED VALUE */
-    -webkit-text-fill-color: #1d1d1f !important; /* Override webkit */
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
-    opacity: 1 !important; /* Ensure visibility */
-    visibility: visible !important;
-    background-clip: unset !important;
-    -webkit-background-clip: unset !important;
-}
-
-/* NUCLEAR OPTION - Target every possible element */
-.stSelectbox *,
-[data-baseweb="select"] *,
-[data-baseweb="select"] span,
-[data-baseweb="select"] div,
-[data-baseweb="select"] p,
-[data-baseweb="select"] > div *,
-[data-baseweb="select"] > div span,
-[data-baseweb="select"] > div div {
+/* FINAL OVERRIDE - FIXED DROPDOWN VISIBILITY */
+/* Target popovers specifically, which may exist outside .stApp */
+div[data-baseweb="popover"],
+div[data-baseweb="popover"] > div,
+div[data-baseweb="popover"] > div > div {
+    background-color: #ffffff !important;
     color: #1d1d1f !important;
-    -webkit-text-fill-color: #1d1d1f !important;
+}
+
+/* Target the options list and items directly */
+div[data-baseweb="popover"] [role="listbox"],
+div[data-baseweb="popover"] [role="option"] {
+    background-color: #ffffff !important;
+    color: #1d1d1f !important; /* Forces dark text */
+}
+
+/* Target deep elements inside options (spans, divs, paragraphs) */
+div[data-baseweb="popover"] [role="option"] *,
+div[data-baseweb="popover"] [role="option"] span,
+div[data-baseweb="popover"] [role="option"] div,
+div[data-baseweb="popover"] [role="option"] p {
+    color: #1d1d1f !important;
+    background-color: transparent !important; /* Inherit white from parent */
+    opacity: 1 !important;
+}
+
+/* Hover and Selected States */
+div[data-baseweb="popover"] [role="option"]:hover,
+div[data-baseweb="popover"] [role="option"][aria-selected="true"] {
+    background-color: #f5f5f7 !important; /* Light gray hover */
+    color: #0071e3 !important; /* Apple Blue highlight */
+}
+
+div[data-baseweb="popover"] [role="option"]:hover *,
+div[data-baseweb="popover"] [role="option"][aria-selected="true"] * {
+    color: #0071e3 !important;
+}
+
+/* NUCLEAR FIX for Selected Option Visibility */
+/* Target the container of the selected value */
+div[data-baseweb="select"] > div:first-child {
+    background-color: #ffffff !important;
+    border: 1px solid #d2d2d7 !important;
+    color: #000000 !important; /* Pure black */
+}
+
+/* Force ALL children text to be black and visible */
+div[data-baseweb="select"] > div:first-child * {
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
     opacity: 1 !important;
     visibility: visible !important;
+    font-weight: 500 !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
 }
 
+/* Exclude the SVG arrow icon from being blacked out if it acts as a mask, 
+   but usually filling it black is fine for visibility too */
+div[data-baseweb="select"] > div:first-child svg {
+    fill: #0071e3 !important; /* Blue arrow */
+    color: #0071e3 !important;
+}
+
+/* Check for any 'role=button' interference and override it specifically for selectbox */
+div[data-baseweb="select"] [role="button"],
+div[data-baseweb="select"] [role="button"] *,
+div[data-baseweb="select"] [role="button"] span,
+div[data-baseweb="select"] [role="button"] div {
+     color: #000000 !important;
+}
 
 </style>
 <script>
@@ -1046,13 +1092,14 @@ def render_hero():
     col_lang1, col_lang2, col_lang3 = st.columns([4, 1, 1])
     with col_lang3:
         available_langs = translations.get_available_languages()
-        selected_lang = st.selectbox(
+        selected_lang = st.radio(
             "Language",
             options=list(available_langs.keys()),
             format_func=lambda x: available_langs[x],
             index=list(available_langs.keys()).index(st.session_state.language),
             key="language_selector",
-            label_visibility="collapsed"
+            label_visibility="collapsed",
+            horizontal=True
         )
         if selected_lang != st.session_state.language:
             st.session_state.language = selected_lang
@@ -1158,7 +1205,8 @@ def render_selection_screen():
         col_opts, col_detais = st.columns([1.2, 0.8], gap="large")
         
         with col_opts:
-            source = st.selectbox(t("choose_source"), [
+            # Replaced Dropdown with Radio for better visibility
+            source = st.radio(t("choose_source"), [
                 "UK National Grid - Carbon Intensity (~96 records)",
                 "WRI - Global Power Plants (~96 records)",
                 "World Bank - Energy & Carbon (~500 records)",
@@ -1575,7 +1623,7 @@ def render_dashboard():
 
     # Navbar Layout: Logo | Spacer | Language | Mini-Spacer | New Analysis
     # Added explicit spacing between language and button
-    c_logo, c_space, c_lang, c_gap, c_reset = st.columns([1.5, 4.7, 1.2, 0.3, 2.3], gap="small")
+    c_logo, c_space, c_lang, c_gap, c_reset = st.columns([1.5, 3.4, 2.5, 0.3, 2.3], gap="small")
     
     with c_logo:
         st.image("assets/octogreen-logo.png", width=130)
@@ -1585,13 +1633,14 @@ def render_dashboard():
         
     with c_lang:
         available_langs = translations.get_available_languages()
-        selected_lang = st.selectbox(
+        selected_lang = st.radio(
             "Language",
             options=list(available_langs.keys()),
             format_func=lambda x: available_langs[x],
             index=list(available_langs.keys()).index(st.session_state.language),
             key="dashboard_language_selector",
-            label_visibility="collapsed"
+            label_visibility="collapsed",
+            horizontal=True
         )
         if selected_lang != st.session_state.language:
             st.session_state.language = selected_lang

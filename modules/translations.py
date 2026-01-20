@@ -606,8 +606,5 @@ def get_available_languages():
     """Get list of available languages"""
     return {
         "en": "🇬🇧 English",
-        "tr": "🇹🇷 Türkçe", 
-        "de": "🇩🇪 Deutsch",
-        "fr": "🇫🇷 Français",
-        "es": "🇪🇸 Español"
+        "tr": "🇹🇷 Türkçe"
     }
